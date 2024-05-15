@@ -1,0 +1,11 @@
+# pack-refs with: peeled fully-peeled sorted 
+093c4d14ea55b702407f5e5459239d61a73eef56 refs/remotes/origin/dependabot/hex/ash_sql-0.1.1-rc.20
+4e9cff586684056eb71ae7acad0fdbd7b5db541c refs/remotes/origin/main
+05d43bbd8fd196025f7ed6ea3d240d077def047f refs/tags/v0.1.0
+^98343e266d530d44fc5de48f35147103724c3454
+e387d02fc0b11c8e8b928cd08a931a030e8c779a refs/tags/v0.1.1
+^b4ed3806c4ef51c06c682956f24fb2895a0a7e54
+b3e3b6480c1d2dc54d5b227beef9ddf37897c6a8 refs/tags/v0.1.2-rc.0
+^26f94773c09ec7ef009bf0af8357a6f2c0ab2ad9
+364d98a6d77b2089247dfbcf396fb734f682cccc refs/tags/v0.1.2-rc.1
+^f3b100d07f06808dc327345678dc19b309d767dd
