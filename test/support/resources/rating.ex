@@ -1,12 +1,12 @@
-defmodule AshSqlite.Test.Rating do
+defmodule AshMysql.Test.Rating do
   @moduledoc false
   use Ash.Resource,
-    domain: AshSqlite.Test.Domain,
-    data_layer: AshSqlite.DataLayer
+    domain: AshMysql.Test.Domain,
+    data_layer: AshMysql.DataLayer
 
-  sqlite do
+  mysql do
     polymorphic?(true)
-    repo AshSqlite.TestRepo
+    repo AshMysql.TestRepo
   end
 
   actions do

@@ -1,4 +1,4 @@
-defmodule AshSqlite.Test.Money do
+defmodule AshMysql.Test.Money do
   @moduledoc false
   use Ash.Resource,
     data_layer: :embedded

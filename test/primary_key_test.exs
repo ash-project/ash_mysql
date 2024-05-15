@@ -1,7 +1,7 @@
-defmodule AshSqlite.Test.PrimaryKeyTest do
+defmodule AshMysql.Test.PrimaryKeyTest do
   @moduledoc false
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.{IntegerPost, Post, PostView}
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.{IntegerPost, Post, PostView}
 
   require Ash.Query
 

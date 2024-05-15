@@ -1,14 +1,14 @@
-defmodule AshSqlite.SqlImplementation do
+defmodule AshMysql.SqlImplementation do
   @moduledoc false
   use AshSql.Implementation
 
   require Ecto.Query
 
   @impl true
-  def manual_relationship_function, do: :ash_sqlite_join
+  def manual_relationship_function, do: :ash_mysql_join
 
   @impl true
-  def manual_relationship_subquery_function, do: :ash_sqlite_subquery
+  def manual_relationship_subquery_function, do: :ash_mysql_subquery
 
   @impl true
   def strpos_function, do: "instr"
@@ -25,7 +25,7 @@ defmodule AshSqlite.SqlImplementation do
         acc,
         type
       )
-      when like in [AshSqlite.Functions.Like, AshSqlite.Functions.ILike] do
+      when like in [AshMysql.Functions.Like, AshMysql.Functions.ILike] do
     {arg1, acc} =
       AshSql.Expr.dynamic_expr(query, arg1, bindings, pred_embedded? || embedded?, :string, acc)
 
@@ -33,7 +33,7 @@ defmodule AshSqlite.SqlImplementation do
       AshSql.Expr.dynamic_expr(query, arg2, bindings, pred_embedded? || embedded?, :string, acc)
 
     inner_dyn =
-      if like == AshSqlite.Functions.Like do
+      if like == AshMysql.Functions.Like do
         Ecto.Query.dynamic(like(^arg1, ^arg2))
       else
         Ecto.Query.dynamic(like(fragment("LOWER(?)", ^arg1), fragment("LOWER(?)", ^arg2)))
@@ -145,7 +145,7 @@ defmodule AshSqlite.SqlImplementation do
 
   @impl true
   def table(resource) do
-    AshSqlite.DataLayer.Info.table(resource)
+    AshMysql.DataLayer.Info.table(resource)
   end
 
   @impl true
@@ -155,7 +155,7 @@ defmodule AshSqlite.SqlImplementation do
 
   @impl true
   def repo(resource, _kind) do
-    AshSqlite.DataLayer.Info.repo(resource)
+    AshMysql.DataLayer.Info.repo(resource)
   end
 
   @impl true
@@ -398,7 +398,7 @@ defmodule AshSqlite.SqlImplementation do
         nil
 
       {type, constraints} ->
-        AshSqlite.Types.parameterized_type(type, constraints)
+        AshMysql.Types.parameterized_type(type, constraints)
     end
   end
 

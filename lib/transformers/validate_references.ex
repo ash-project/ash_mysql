@@ -1,4 +1,4 @@
-defmodule AshSqlite.Transformers.ValidateReferences do
+defmodule AshMysql.Transformers.ValidateReferences do
   @moduledoc false
   use Spark.Dsl.Transformer
   alias Spark.Dsl.Transformer
@@ -7,11 +7,11 @@ defmodule AshSqlite.Transformers.ValidateReferences do
 
   def transform(dsl) do
     dsl
-    |> AshSqlite.DataLayer.Info.references()
+    |> AshMysql.DataLayer.Info.references()
     |> Enum.each(fn reference ->
       unless Ash.Resource.Info.relationship(dsl, reference.relationship) do
         raise Spark.Error.DslError,
-          path: [:sqlite, :references, reference.relationship],
+          path: [:mysql, :references, reference.relationship],
           module: Transformer.get_persisted(dsl, :module),
           message:
             "Found reference configuration for relationship `#{reference.relationship}`, but no such relationship exists"

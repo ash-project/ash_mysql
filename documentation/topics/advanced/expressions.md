@@ -1,10 +1,10 @@
 # Expressions
 
-In addition to the expressions listed in the [Ash expressions guide](https://hexdocs.pm/ash/expressions.html), AshSqlite provides the following expressions
+In addition to the expressions listed in the [Ash expressions guide](https://hexdocs.pm/ash/expressions.html), AshMysql provides the following expressions
 
 # Fragments
 
-Fragments allow you to use arbitrary sqlite expressions in your queries. Fragments can often be an escape hatch to allow you to do things that don't have something officially supported with Ash.
+Fragments allow you to use arbitrary mysql expressions in your queries. Fragments can often be an escape hatch to allow you to do things that don't have something officially supported with Ash.
 
 ### Examples
 
@@ -50,7 +50,7 @@ end
 
 ## Like
 
-These wrap the sqlite builtin like operator
+These wrap the mysql builtin like operator
 
 Please be aware, these match _patterns_ not raw text. Use `contains/1` if you want to match text without supporting patterns, i.e `%` and `_` have semantic meaning!
 

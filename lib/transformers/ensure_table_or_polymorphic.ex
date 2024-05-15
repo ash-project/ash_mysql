@@ -1,11 +1,11 @@
-defmodule AshSqlite.Transformers.EnsureTableOrPolymorphic do
+defmodule AshMysql.Transformers.EnsureTableOrPolymorphic do
   @moduledoc false
   use Spark.Dsl.Transformer
   alias Spark.Dsl.Transformer
 
   def transform(dsl) do
-    if Transformer.get_option(dsl, [:sqlite], :polymorphic?) ||
-         Transformer.get_option(dsl, [:sqlite], :table) do
+    if Transformer.get_option(dsl, [:mysql], :polymorphic?) ||
+         Transformer.get_option(dsl, [:mysql], :table) do
       {:ok, dsl}
     else
       resource = Transformer.get_persisted(dsl, :module)
@@ -18,13 +18,13 @@ defmodule AshSqlite.Transformers.EnsureTableOrPolymorphic do
         For example:
 
         ```elixir
-        sqlite do
+        mysql do
           table "the_table"
           repo YourApp.Repo
         end
         ```
         """,
-        path: [:sqlite, :table]
+        path: [:mysql, :table]
     end
   end
 end

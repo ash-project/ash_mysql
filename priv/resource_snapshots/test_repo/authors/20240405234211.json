@@ -56,7 +56,7 @@
   ],
   "table": "authors",
   "hash": "EFBB1E574CC263E6E650121801C48B4370F1C9A7C8A213BEF111BFC769BF6651",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [],
   "base_filter": null,
   "multitenancy": {

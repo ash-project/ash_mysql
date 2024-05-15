@@ -1,7 +1,7 @@
-defmodule AshSqlite.TestCustomExtension do
+defmodule AshMysql.TestCustomExtension do
   @moduledoc false
 
-  use AshSqlite.CustomExtension, name: "demo-functions", latest_version: 1
+  use AshMysql.CustomExtension, name: "demo-functions", latest_version: 1
 
   @impl true
   def install(0) do

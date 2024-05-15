@@ -1,6 +1,6 @@
-defmodule AshSqlite.BulkCreateTest do
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.Post
+defmodule AshMysql.BulkCreateTest do
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.Post
 
   describe "bulk creates" do
     test "bulk creates insert each input" do
@@ -105,7 +105,7 @@ defmodule AshSqlite.BulkCreateTest do
   describe "database errors" do
     test "database errors affect the entire batch" do
       org =
-        AshSqlite.Test.Organization
+        AshMysql.Test.Organization
         |> Ash.Changeset.for_create(:create, %{name: "foo"})
         |> Ash.create!()
 

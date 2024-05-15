@@ -1,8 +1,8 @@
-defmodule AshSqlite.Test.Post.CommentsContainingTitle do
+defmodule AshMysql.Test.Post.CommentsContainingTitle do
   @moduledoc false
 
   use Ash.Resource.ManualRelationship
-  use AshSqlite.ManualRelationship
+  use AshMysql.ManualRelationship
   require Ash.Query
   require Ecto.Query
 
@@ -17,7 +17,7 @@ defmodule AshSqlite.Test.Post.CommentsContainingTitle do
      |> Enum.group_by(& &1.post_id)}
   end
 
-  def ash_sqlite_join(query, _opts, current_binding, as_binding, :inner, destination_query) do
+  def ash_mysql_join(query, _opts, current_binding, as_binding, :inner, destination_query) do
     {:ok,
      Ecto.Query.from(_ in query,
        join: dest in ^destination_query,
@@ -27,7 +27,7 @@ defmodule AshSqlite.Test.Post.CommentsContainingTitle do
      )}
   end
 
-  def ash_sqlite_join(query, _opts, current_binding, as_binding, :left, destination_query) do
+  def ash_mysql_join(query, _opts, current_binding, as_binding, :left, destination_query) do
     {:ok,
      Ecto.Query.from(_ in query,
        left_join: dest in ^destination_query,
@@ -37,7 +37,7 @@ defmodule AshSqlite.Test.Post.CommentsContainingTitle do
      )}
   end
 
-  def ash_sqlite_subquery(_opts, current_binding, as_binding, destination_query) do
+  def ash_mysql_subquery(_opts, current_binding, as_binding, destination_query) do
     {:ok,
      Ecto.Query.from(_ in destination_query,
        where: parent_as(^current_binding).id == as(^as_binding).post_id,

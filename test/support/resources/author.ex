@@ -1,19 +1,19 @@
-defmodule AshSqlite.Test.Author do
+defmodule AshMysql.Test.Author do
   @moduledoc false
   use Ash.Resource,
-    domain: AshSqlite.Test.Domain,
-    data_layer: AshSqlite.DataLayer
+    domain: AshMysql.Test.Domain,
+    data_layer: AshMysql.DataLayer
 
-  sqlite do
+  mysql do
     table("authors")
-    repo(AshSqlite.TestRepo)
+    repo(AshMysql.TestRepo)
   end
 
   attributes do
     uuid_primary_key(:id, writable?: true)
     attribute(:first_name, :string, public?: true)
     attribute(:last_name, :string, public?: true)
-    attribute(:bio, AshSqlite.Test.Bio, public?: true)
+    attribute(:bio, AshMysql.Test.Bio, public?: true)
     # attribute(:badges, {:array, :atom}, public?: true)
   end
 
@@ -23,8 +23,8 @@ defmodule AshSqlite.Test.Author do
   end
 
   relationships do
-    has_one(:profile, AshSqlite.Test.Profile, public?: true)
-    has_many(:posts, AshSqlite.Test.Post, public?: true)
+    has_one(:profile, AshMysql.Test.Profile, public?: true)
+    has_many(:posts, AshMysql.Test.Post, public?: true)
   end
 
   calculations do
@@ -67,7 +67,7 @@ defmodule AshSqlite.Test.Author do
 
     calculate :param_full_name,
               :string,
-              {AshSqlite.Test.Concat, keys: [:first_name, :last_name]} do
+              {AshMysql.Test.Concat, keys: [:first_name, :last_name]} do
       argument(:separator, :string, default: " ", constraints: [allow_empty?: true, trim?: false])
     end
   end

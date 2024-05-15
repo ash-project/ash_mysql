@@ -223,7 +223,7 @@
   ],
   "table": "posts",
   "hash": "00D35B64138747A522AD4EAB9BB8E09BDFE30C95844FD1D46E0951E85EA18FBE",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [
     {
       "name": "uniq_one_and_two",

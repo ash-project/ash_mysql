@@ -1,4 +1,4 @@
-defmodule AshSqlite.Types do
+defmodule AshMysql.Types do
   @moduledoc false
 
   alias Ash.Query.Ref

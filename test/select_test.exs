@@ -1,7 +1,7 @@
-defmodule AshSqlite.SelectTest do
+defmodule AshMysql.SelectTest do
   @moduledoc false
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.Post
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.Post
 
   require Ash.Query
 

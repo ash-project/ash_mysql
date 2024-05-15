@@ -1,4 +1,4 @@
-defmodule AshSqlite.Test.Concat do
+defmodule AshMysql.Test.Concat do
   @moduledoc false
   use Ash.Resource.Calculation
   require Ash.Query

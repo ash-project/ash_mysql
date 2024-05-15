@@ -1,12 +1,12 @@
-defmodule AshSqlite.Test.Manager do
+defmodule AshMysql.Test.Manager do
   @moduledoc false
   use Ash.Resource,
-    domain: AshSqlite.Test.Domain,
-    data_layer: AshSqlite.DataLayer
+    domain: AshMysql.Test.Domain,
+    data_layer: AshMysql.DataLayer
 
-  sqlite do
+  mysql do
     table("managers")
-    repo(AshSqlite.TestRepo)
+    repo(AshMysql.TestRepo)
   end
 
   actions do
@@ -34,7 +34,7 @@ defmodule AshSqlite.Test.Manager do
   end
 
   relationships do
-    belongs_to :organization, AshSqlite.Test.Organization do
+    belongs_to :organization, AshMysql.Test.Organization do
       public?(true)
       attribute_writable?(true)
     end

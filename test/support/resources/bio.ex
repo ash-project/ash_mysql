@@ -1,4 +1,4 @@
-defmodule AshSqlite.Test.Bio do
+defmodule AshMysql.Test.Bio do
   @moduledoc false
   use Ash.Resource, data_layer: :embedded
 

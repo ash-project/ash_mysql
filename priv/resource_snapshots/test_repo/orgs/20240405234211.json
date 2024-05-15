@@ -23,7 +23,7 @@
   ],
   "table": "orgs",
   "hash": "106CE7B860A710A1275B05F81F2272B74678DC467F87E4179F9BEA8BC979613C",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [],
   "base_filter": null,
   "multitenancy": {

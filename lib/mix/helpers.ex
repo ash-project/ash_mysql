@@ -1,4 +1,4 @@
-defmodule AshSqlite.Mix.Helpers do
+defmodule AshMysql.Mix.Helpers do
   @moduledoc false
   def domains!(opts, args) do
     apps =
@@ -43,13 +43,13 @@ defmodule AshSqlite.Mix.Helpers do
     resources =
       domains
       |> Enum.flat_map(&Ash.Domain.Info.resources/1)
-      |> Enum.filter(&(Ash.DataLayer.data_layer(&1) == AshSqlite.DataLayer))
+      |> Enum.filter(&(Ash.DataLayer.data_layer(&1) == AshMysql.DataLayer))
       |> case do
         [] ->
           raise """
-          No resources with `data_layer: AshSqlite.DataLayer` found in the domains #{Enum.map_join(domains, ",", &inspect/1)}.
+          No resources with `data_layer: AshMysql.DataLayer` found in the domains #{Enum.map_join(domains, ",", &inspect/1)}.
 
-          Must be able to find at least one resource with `data_layer: AshSqlite.DataLayer`.
+          Must be able to find at least one resource with `data_layer: AshMysql.DataLayer`.
           """
 
         resources ->
@@ -57,7 +57,7 @@ defmodule AshSqlite.Mix.Helpers do
       end
 
     resources
-    |> Enum.map(&AshSqlite.DataLayer.Info.repo(&1))
+    |> Enum.map(&AshMysql.DataLayer.Info.repo(&1))
     |> Enum.uniq()
     |> case do
       [] ->
@@ -66,7 +66,7 @@ defmodule AshSqlite.Mix.Helpers do
 
         At least one resource must have a repo configured.
 
-        The following resources were found with `data_layer: AshSqlite.DataLayer`:
+        The following resources were found with `data_layer: AshMysql.DataLayer`:
 
         #{Enum.map_join(resources, "\n", &"* #{inspect(&1)}")}
         """

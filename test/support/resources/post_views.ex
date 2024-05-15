@@ -1,6 +1,6 @@
-defmodule AshSqlite.Test.PostView do
+defmodule AshMysql.Test.PostView do
   @moduledoc false
-  use Ash.Resource, domain: AshSqlite.Test.Domain, data_layer: AshSqlite.DataLayer
+  use Ash.Resource, domain: AshMysql.Test.Domain, data_layer: AshMysql.DataLayer
 
   actions do
     default_accept(:*)
@@ -13,7 +13,7 @@ defmodule AshSqlite.Test.PostView do
   end
 
   relationships do
-    belongs_to :post, AshSqlite.Test.Post do
+    belongs_to :post, AshMysql.Test.Post do
       public?(true)
       allow_nil?(false)
       attribute_writable?(true)
@@ -24,9 +24,9 @@ defmodule AshSqlite.Test.PostView do
     require_primary_key?(false)
   end
 
-  sqlite do
+  mysql do
     table "post_views"
-    repo AshSqlite.TestRepo
+    repo AshMysql.TestRepo
 
     references do
       reference :post, ignore?: true

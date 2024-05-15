@@ -1,20 +1,20 @@
-defmodule AshSqlite.Test.Domain do
+defmodule AshMysql.Test.Domain do
   @moduledoc false
   use Ash.Domain
 
   resources do
-    resource(AshSqlite.Test.Post)
-    resource(AshSqlite.Test.Comment)
-    resource(AshSqlite.Test.IntegerPost)
-    resource(AshSqlite.Test.Rating)
-    resource(AshSqlite.Test.PostLink)
-    resource(AshSqlite.Test.PostView)
-    resource(AshSqlite.Test.Author)
-    resource(AshSqlite.Test.Profile)
-    resource(AshSqlite.Test.User)
-    resource(AshSqlite.Test.Account)
-    resource(AshSqlite.Test.Organization)
-    resource(AshSqlite.Test.Manager)
+    resource(AshMysql.Test.Post)
+    resource(AshMysql.Test.Comment)
+    resource(AshMysql.Test.IntegerPost)
+    resource(AshMysql.Test.Rating)
+    resource(AshMysql.Test.PostLink)
+    resource(AshMysql.Test.PostView)
+    resource(AshMysql.Test.Author)
+    resource(AshMysql.Test.Profile)
+    resource(AshMysql.Test.User)
+    resource(AshMysql.Test.Account)
+    resource(AshMysql.Test.Organization)
+    resource(AshMysql.Test.Manager)
   end
 
   authorization do

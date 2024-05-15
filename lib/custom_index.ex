@@ -1,4 +1,4 @@
-defmodule AshSqlite.CustomIndex do
+defmodule AshMysql.CustomIndex do
   @moduledoc "Represents a custom index on the table backing a resource"
   @fields [
     :table,
@@ -44,7 +44,7 @@ defmodule AshSqlite.CustomIndex do
     include: [
       type: {:list, :string},
       doc:
-        "specify fields for a covering index. This is not supported by all databases. For more information on SQLite support, please read the official docs."
+        "specify fields for a covering index. This is not supported by all databases. For more information on MySQL support, please read the official docs."
     ]
   ]
 

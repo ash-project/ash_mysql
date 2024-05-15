@@ -1,12 +1,12 @@
-defmodule AshSqlite.Test.Organization do
+defmodule AshMysql.Test.Organization do
   @moduledoc false
   use Ash.Resource,
-    domain: AshSqlite.Test.Domain,
-    data_layer: AshSqlite.DataLayer
+    domain: AshMysql.Test.Domain,
+    data_layer: AshMysql.DataLayer
 
-  sqlite do
+  mysql do
     table("orgs")
-    repo(AshSqlite.TestRepo)
+    repo(AshMysql.TestRepo)
   end
 
   actions do

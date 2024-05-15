@@ -1,6 +1,6 @@
-defmodule AshSqlite.AtomicsTest do
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.Post
+defmodule AshMysql.AtomicsTest do
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.Post
 
   import Ash.Expr
 

@@ -1,4 +1,4 @@
-defmodule AshSqlite.CustomExtension do
+defmodule AshMysql.CustomExtension do
   @moduledoc """
   A custom extension implementation.
   """
@@ -9,7 +9,7 @@ defmodule AshSqlite.CustomExtension do
 
   defmacro __using__(name: name, latest_version: latest_version) do
     quote do
-      @behaviour AshSqlite.CustomExtension
+      @behaviour AshMysql.CustomExtension
 
       @extension_name unquote(name)
       @extension_latest_version unquote(latest_version)

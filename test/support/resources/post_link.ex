@@ -1,12 +1,12 @@
-defmodule AshSqlite.Test.PostLink do
+defmodule AshMysql.Test.PostLink do
   @moduledoc false
   use Ash.Resource,
-    domain: AshSqlite.Test.Domain,
-    data_layer: AshSqlite.DataLayer
+    domain: AshMysql.Test.Domain,
+    data_layer: AshMysql.DataLayer
 
-  sqlite do
+  mysql do
     table "post_links"
-    repo AshSqlite.TestRepo
+    repo AshMysql.TestRepo
   end
 
   actions do
@@ -27,13 +27,13 @@ defmodule AshSqlite.Test.PostLink do
   end
 
   relationships do
-    belongs_to :source_post, AshSqlite.Test.Post do
+    belongs_to :source_post, AshMysql.Test.Post do
       public?(true)
       allow_nil?(false)
       primary_key?(true)
     end
 
-    belongs_to :destination_post, AshSqlite.Test.Post do
+    belongs_to :destination_post, AshMysql.Test.Post do
       public?(true)
       allow_nil?(false)
       primary_key?(true)

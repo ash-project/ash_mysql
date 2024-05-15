@@ -2,7 +2,7 @@
 
 ## Tasks
 
-Ash comes with its own tasks, and AshSqlite exposes lower level tasks that you can use if necessary. This guide shows the process using `ash.*` tasks, and the `ash_sqlite.*` tasks are illustrated at the bottom.
+Ash comes with its own tasks, and AshMysql exposes lower level tasks that you can use if necessary. This guide shows the process using `ash.*` tasks, and the `ash_mysql.*` tasks are illustrated at the bottom.
 
 ## Basic W## Basic Workflow
 
@@ -10,7 +10,7 @@ Ash comes with its own tasks, and AshSqlite exposes lower level tasks that you c
 - Run `mix ash.codegen --name add_a_combobulator` to generate migrations and resource snapshots
 - Run `mix ash.migrate` to run those migrations
 
-For more information on generating migrations, run `mix help ash_sqlite.generate_migrations` (the underlying task that is called by `mix ash.migrate`)
+For more information on generating migrations, run `mix help ash_mysql.generate_migrations` (the underlying task that is called by `mix ash.migrate`)
 
 ### Regenerating Migratio### Regenerating Migrations
 
@@ -23,7 +23,7 @@ Often, you will run into a situation where you want to make a slight change to a
 N_MIGRATIONS=$(git ls-files --others priv/repo/migrations | wc -l)
 
 # Rollback untracked migrations
-mix ash_sqlite.rollback -n $N_MIGRATIONS
+mix ash_mysql.rollback -n $N_MIGRATIONS
 
 # Delete untracked migrations and snapshots
 git ls-files --others priv/repo/migrations | xargs rm
@@ -74,7 +74,7 @@ defmodule MyApp.Release do
     |> Enum.flat_map(fn domain ->
       domain
       |> Ash.Domain.Info.resources()
-      |> Enum.map(&AshSqlite.repo/1)
+      |> Enum.map(&AshMysql.repo/1)
     end)
     |> Enum.uniq()
   end
@@ -89,10 +89,10 @@ defmodule MyApp.Release do
 end
 ```
 
-# AshSqlite-specific tasks
+# AshMysql-specific tasks
 
-- `mix ash_sqlite.generate_migrations`
-- `mix ash_sqlite.create`
-- `mix ash_sqlite.migrate`
-- `mix ash_sqlite.rollback`
-- `mix ash_sqlite.drop`
+- `mix ash_mysql.generate_migrations`
+- `mix ash_mysql.create`
+- `mix ash_mysql.migrate`
+- `mix ash_mysql.rollback`
+- `mix ash_mysql.drop`

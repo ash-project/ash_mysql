@@ -1,7 +1,7 @@
-defmodule Mix.Tasks.AshSqlite.Migrate do
+defmodule Mix.Tasks.AshMysql.Migrate do
   use Mix.Task
 
-  import AshSqlite.Mix.Helpers,
+  import AshMysql.Mix.Helpers,
     only: [migrations_path: 2]
 
   @shortdoc "Runs the repository migrations for all repositories in the provided (or congigured) domains"
@@ -47,13 +47,13 @@ defmodule Mix.Tasks.AshSqlite.Migrate do
 
   ## Examples
 
-      mix ash_sqlite.migrate
-      mix ash_sqlite.migrate --domains MyApp.Domain1,MyApp.Domain2
+      mix ash_mysql.migrate
+      mix ash_mysql.migrate --domains MyApp.Domain1,MyApp.Domain2
 
-      mix ash_sqlite.migrate -n 3
-      mix ash_sqlite.migrate --step 3
+      mix ash_mysql.migrate -n 3
+      mix ash_mysql.migrate --step 3
 
-      mix ash_sqlite.migrate --to 20080906120000
+      mix ash_mysql.migrate --to 20080906120000
 
   ## Command line options
 
@@ -90,7 +90,7 @@ defmodule Mix.Tasks.AshSqlite.Migrate do
   def run(args) do
     {opts, _} = OptionParser.parse!(args, strict: @switches, aliases: @aliases)
 
-    repos = AshSqlite.Mix.Helpers.repos!(opts, args)
+    repos = AshMysql.Mix.Helpers.repos!(opts, args)
 
     repo_args =
       Enum.flat_map(repos, fn repo ->
@@ -99,8 +99,8 @@ defmodule Mix.Tasks.AshSqlite.Migrate do
 
     rest_opts =
       args
-      |> AshSqlite.Mix.Helpers.delete_arg("--domains")
-      |> AshSqlite.Mix.Helpers.delete_arg("--migrations-path")
+      |> AshMysql.Mix.Helpers.delete_arg("--domains")
+      |> AshMysql.Mix.Helpers.delete_arg("--migrations-path")
 
     Mix.Task.reenable("ecto.migrate")
 

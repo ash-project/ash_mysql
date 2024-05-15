@@ -48,7 +48,7 @@
   ],
   "table": "comment_ratings",
   "hash": "88FFC6DC62CEA37397A9C16C51E43F6FF6EED6C34E4C529FFB4D20EF1BCFF98F",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [],
   "base_filter": null,
   "multitenancy": {
