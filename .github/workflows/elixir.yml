@@ -1,15 +1,14 @@
 name: CI
-on:
-  push:
-    tags:
-      - "v*"
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push]
 jobs:
   ash-ci:
-    uses: ash-project/ash/.github/workflows/ash-ci.yml@main
+    strategy:
+      fail-fast: false
+      matrix:
+        mysql-version: ["8.0"]
+    uses: lejoko/ash_mysql/.github/workflows/ash-ci.yml@main
     with:
-      sqlite: true
+      mysql: true
+      mysql-version: ${{matrix.mysql-version}}
     secrets:
       hex_api_key: ${{ secrets.HEX_API_KEY }}
