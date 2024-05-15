@@ -8,6 +8,19 @@ defmodule AshSqlite.TestRepo.Migrations.MigrateResources1 do
   use Ecto.Migration
 
   def up do
+    create table(:orgs, primary_key: false) do
+      add :name, :text
+      add :id, :uuid, null: false, primary_key: true
+    end
+
+    create table(:authors, primary_key: false) do
+      #add :badges, {:array, :text}
+      add :bio, :map
+      add :last_name, :text
+      add :first_name, :text
+      add :id, :uuid, null: false, primary_key: true
+    end
+
     create table(:users, primary_key: false) do
       add :organization_id,
           references(:orgs, column: :id, name: "users_organization_id_fkey", type: :uuid)
@@ -37,12 +50,13 @@ defmodule AshSqlite.TestRepo.Migrations.MigrateResources1 do
       add :uniq_two, :text
       add :uniq_one, :text
       add :stuff, :map
-      add :status_enum, :status
+      add :status_enum, :"ENUM('open', 'closed')"
       add :status, :text
       add :decimal, :decimal
       add :price, :bigint
       add :type, :text
-      add :category, :citext
+      #add :category, :citext
+      add :category, :text
       add :public, :boolean
       add :score, :bigint
       add :title, :text
@@ -85,11 +99,6 @@ defmodule AshSqlite.TestRepo.Migrations.MigrateResources1 do
              name: "post_links_unique_link_index"
            )
 
-    create table(:orgs, primary_key: false) do
-      add :name, :text
-      add :id, :uuid, null: false, primary_key: true
-    end
-
     create table(:managers, primary_key: false) do
       add :organization_id,
           references(:orgs, column: :id, name: "managers_organization_id_fkey", type: :uuid)
@@ -101,7 +110,7 @@ defmodule AshSqlite.TestRepo.Migrations.MigrateResources1 do
       add :id, :uuid, null: false, primary_key: true
     end
 
-    create unique_index(:managers, [:code], name: "managers_uniq_code_index")
+    create unique_index(:managers, ["code(768)"], name: "managers_uniq_code_index")
 
     create table(:integer_posts, primary_key: false) do
       add :title, :text
@@ -140,18 +149,10 @@ defmodule AshSqlite.TestRepo.Migrations.MigrateResources1 do
       add :id, :uuid, null: false, primary_key: true
     end
 
-    create table(:authors, primary_key: false) do
-      add :badges, {:array, :text}
-      add :bio, :map
-      add :last_name, :text
-      add :first_name, :text
-      add :id, :uuid, null: false, primary_key: true
-    end
+    create index(:posts, ["uniq_custom_one(384)", "uniq_custom_two(384)"], unique: true)
 
-    create index(:posts, ["uniq_custom_one", "uniq_custom_two"], unique: true)
-
-    create unique_index(:posts, [:uniq_one, :uniq_two],
-             where: "type = 'sponsored'",
+    create unique_index(:posts, ["uniq_one(384)", "uniq_two(384)"],
+    #         where: "type = 'sponsored'",
              name: "posts_uniq_one_and_two_index"
            )
 

@@ -12,8 +12,8 @@ defmodule AshSqlite.Transformers.VerifyRepo do
       match?({:error, _}, Code.ensure_compiled(repo)) ->
         {:error, "Could not find repo module #{repo}"}
 
-      repo.__adapter__() != Ecto.Adapters.SQLite3 ->
-        {:error, "Expected a repo using the sqlite adapter `Ecto.Adapters.SQLite3`"}
+      repo.__adapter__() != Ecto.Adapters.MyXQL ->
+        {:error, "Expected a repo using the MySQL adapter `Ecto.Adapters.MyXQL`"}
 
       true ->
         {:ok, dsl}

@@ -14,7 +14,7 @@ defmodule AshSqlite.Test.Author do
     attribute(:first_name, :string, public?: true)
     attribute(:last_name, :string, public?: true)
     attribute(:bio, AshSqlite.Test.Bio, public?: true)
-    attribute(:badges, {:array, :atom}, public?: true)
+    # attribute(:badges, {:array, :atom}, public?: true)
   end
 
   actions do
