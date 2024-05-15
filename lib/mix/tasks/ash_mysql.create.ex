@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.AshSqlite.Create do
+defmodule Mix.Tasks.AshMysql.Create do
   use Mix.Task
 
   @shortdoc "Creates the repository storage"
@@ -19,8 +19,8 @@ defmodule Mix.Tasks.AshSqlite.Create do
 
   ## Examples
 
-      mix ash_sqlite.create
-      mix ash_sqlite.create --domains MyApp.Domain1,MyApp.Domain2
+      mix ash_mysql.create
+      mix ash_mysql.create --domains MyApp.Domain1,MyApp.Domain2
 
   ## Command line options
 
@@ -34,14 +34,14 @@ defmodule Mix.Tasks.AshSqlite.Create do
   def run(args) do
     {opts, _} = OptionParser.parse!(args, strict: @switches, aliases: @aliases)
 
-    repos = AshSqlite.Mix.Helpers.repos!(opts, args)
+    repos = AshMysql.Mix.Helpers.repos!(opts, args)
 
     repo_args =
       Enum.flat_map(repos, fn repo ->
         ["-r", to_string(repo)]
       end)
 
-    rest_opts = AshSqlite.Mix.Helpers.delete_arg(args, "--domains")
+    rest_opts = AshMysql.Mix.Helpers.delete_arg(args, "--domains")
 
     Mix.Task.reenable("ecto.create")
 

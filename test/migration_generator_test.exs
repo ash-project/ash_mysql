@@ -1,5 +1,5 @@
-defmodule AshSqlite.MigrationGeneratorTest do
-  use AshSqlite.RepoCase, async: false
+defmodule AshMysql.MigrationGeneratorTest do
+  use AshMysql.RepoCase, async: false
   @moduletag :migration
 
   import ExUnit.CaptureLog
@@ -11,11 +11,11 @@ defmodule AshSqlite.MigrationGeneratorTest do
       defmodule unquote(mod) do
         use Ash.Resource,
           domain: nil,
-          data_layer: AshSqlite.DataLayer
+          data_layer: AshMysql.DataLayer
 
-        sqlite do
+        mysql do
           table "posts"
-          repo(AshSqlite.TestRepo)
+          repo(AshMysql.TestRepo)
 
           custom_indexes do
             # need one without any opts
@@ -61,7 +61,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
       end)
 
       defposts do
-        sqlite do
+        mysql do
           migration_types(second_title: {:varchar, 16})
           migration_defaults(title_with_default: "\"fred\"")
         end
@@ -86,7 +86,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       Mix.shell(Mix.Shell.Process)
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -166,7 +166,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       Mix.shell(Mix.Shell.Process)
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -178,7 +178,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
     test "when renaming an index, it is properly renamed" do
       defposts do
-        sqlite do
+        mysql do
           identity_index_names(title: "titles_r_unique_dawg")
         end
 
@@ -194,7 +194,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       defdomain([Post])
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -223,7 +223,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       defdomain([Post])
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -249,7 +249,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       send(self(), {:mix_shell_input, :yes?, true})
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -274,7 +274,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       send(self(), {:mix_shell_input, :yes?, false})
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -302,7 +302,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
       send(self(), {:mix_shell_input, :yes?, true})
       send(self(), {:mix_shell_input, :prompt, "subject"})
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -332,7 +332,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       send(self(), {:mix_shell_input, :yes?, false})
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -363,7 +363,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       defdomain([Post, Post2])
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -398,7 +398,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       Mix.shell(Mix.Shell.Process)
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -435,7 +435,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
     test "returns code(1) if snapshots and resources don't fit", %{domain: domain} do
       assert catch_exit(
-               AshSqlite.MigrationGenerator.generate(domain,
+               AshMysql.MigrationGenerator.generate(domain,
                  snapshot_path: "test_snapshot_path",
                  migration_path: "test_migration_path",
                  check: true
@@ -477,7 +477,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       defdomain([Post, Post2])
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -512,7 +512,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       defdomain([Post, Post2])
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -547,7 +547,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       defdomain([Post, Post2])
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -555,7 +555,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
       )
 
       defposts Post2 do
-        sqlite do
+        mysql do
           references do
             reference(:post, name: "special_post_fkey", on_delete: :delete, on_update: :update)
           end
@@ -571,7 +571,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
         end
       end
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -609,11 +609,11 @@ defmodule AshSqlite.MigrationGeneratorTest do
       defmodule Comment do
         use Ash.Resource,
           domain: nil,
-          data_layer: AshSqlite.DataLayer
+          data_layer: AshMysql.DataLayer
 
-        sqlite do
+        mysql do
           polymorphic?(true)
-          repo(AshSqlite.TestRepo)
+          repo(AshMysql.TestRepo)
         end
 
         attributes do
@@ -629,11 +629,11 @@ defmodule AshSqlite.MigrationGeneratorTest do
       defmodule Post do
         use Ash.Resource,
           domain: nil,
-          data_layer: AshSqlite.DataLayer
+          data_layer: AshMysql.DataLayer
 
-        sqlite do
+        mysql do
           table "posts"
-          repo(AshSqlite.TestRepo)
+          repo(AshMysql.TestRepo)
         end
 
         actions do
@@ -659,7 +659,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       defdomain([Post, Comment])
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -696,7 +696,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
       defdomain([Post])
 
       capture_log(fn ->
-        AshSqlite.MigrationGenerator.generate(Domain,
+        AshMysql.MigrationGenerator.generate(Domain,
           snapshot_path: "test_snapshots_path",
           migration_path: "test_migration_path",
           quiet: true,
@@ -730,11 +730,11 @@ defmodule AshSqlite.MigrationGeneratorTest do
       defmodule Comment do
         use Ash.Resource,
           domain: nil,
-          data_layer: AshSqlite.DataLayer
+          data_layer: AshMysql.DataLayer
 
-        sqlite do
+        mysql do
           table "comments"
-          repo AshSqlite.TestRepo
+          repo AshMysql.TestRepo
         end
 
         attributes do
@@ -750,7 +750,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       Mix.shell(Mix.Shell.Process)
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,
@@ -772,11 +772,11 @@ defmodule AshSqlite.MigrationGeneratorTest do
       defmodule Comment do
         use Ash.Resource,
           domain: nil,
-          data_layer: AshSqlite.DataLayer
+          data_layer: AshMysql.DataLayer
 
-        sqlite do
+        mysql do
           table "comments"
-          repo AshSqlite.TestRepo
+          repo AshMysql.TestRepo
         end
 
         attributes do
@@ -790,7 +790,7 @@ defmodule AshSqlite.MigrationGeneratorTest do
 
       defdomain([Post, Comment])
 
-      AshSqlite.MigrationGenerator.generate(Domain,
+      AshMysql.MigrationGenerator.generate(Domain,
         snapshot_path: "test_snapshots_path",
         migration_path: "test_migration_path",
         quiet: true,

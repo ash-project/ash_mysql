@@ -33,7 +33,7 @@
   ],
   "table": "post_views",
   "hash": "D0749D9F514E36781D95F2967C97860C58C6DEAE95543DFAAB0E9C09A1480E93",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [],
   "base_filter": null,
   "multitenancy": {

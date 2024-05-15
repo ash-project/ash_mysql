@@ -48,7 +48,7 @@
   ],
   "table": "accounts",
   "hash": "2320B8B55C597C2F07DED9B7BF714832FE22B0AA5E05959A4EA0553669BC368D",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [],
   "base_filter": null,
   "multitenancy": {

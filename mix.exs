@@ -1,15 +1,15 @@
-defmodule AshSqlite.MixProject do
+defmodule AshMysql.MixProject do
   use Mix.Project
 
   @description """
-  The SQLite data layer for Ash Framework.
+  The MySQL data layer for Ash Framework.
   """
 
-  @version "0.1.2"
+  @version "0.1.0"
 
   def project do
     [
-      app: :ash_sqlite,
+      app: :ash_mysql,
       version: @version,
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
@@ -33,8 +33,8 @@ defmodule AshSqlite.MixProject do
       docs: docs(),
       aliases: aliases(),
       package: package(),
-      source_url: "https://github.com/ash-project/ash_sqlite",
-      homepage_url: "https://github.com/ash-project/ash_sqlite",
+      source_url: "https://github.com/ash-project/ash_mysql",
+      homepage_url: "https://github.com/ash-project/ash_mysql",
       consolidate_protocols: Mix.env() != :test
     ]
   end
@@ -42,7 +42,7 @@ defmodule AshSqlite.MixProject do
   if Mix.env() == :test do
     def application() do
       [
-        mod: {AshSqlite.TestApp, []}
+        mod: {AshMysql.TestApp, []}
       ]
     end
   end
@@ -52,12 +52,12 @@ defmodule AshSqlite.MixProject do
 
   defp package do
     [
-      name: :ash_sqlite,
+      name: :ash_mysql,
       licenses: ["MIT"],
       files: ~w(lib .formatter.exs mix.exs README* LICENSE*
       CHANGELOG* documentation),
       links: %{
-        GitHub: "https://github.com/ash-project/ash_sqlite"
+        GitHub: "https://github.com/ash-project/ash_mysql"
       }
     ]
   end
@@ -69,15 +69,15 @@ defmodule AshSqlite.MixProject do
       logo: "logos/small-logo.png",
       extras: [
         {"README.md", title: "Home"},
-        "documentation/tutorials/getting-started-with-ash-sqlite.md",
-        "documentation/topics/about-ash-sqlite/what-is-ash-sqlite.md",
+        "documentation/tutorials/getting-started-with-ash-mysql.md",
+        "documentation/topics/about-ash-mysql/what-is-ash-mysql.md",
         "documentation/topics/resources/references.md",
         "documentation/topics/resources/polymorphic-resources.md",
         "documentation/topics/development/migrations-and-tasks.md",
         "documentation/topics/development/testing.md",
         "documentation/topics/advanced/expressions.md",
         "documentation/topics/advanced/manual-relationships.md",
-        "documentation/dsls/DSL:-AshSqlite.DataLayer.md",
+        "documentation/dsls/DSL:-AshMysql.DataLayer.md",
         "CHANGELOG.md"
       ],
       groups_for_extras: [
@@ -87,32 +87,32 @@ defmodule AshSqlite.MixProject do
         "How To": ~r'documentation/how_to',
         Topics: ~r'documentation/topics',
         DSLs: ~r'documentation/dsls',
-        "About AshSqlite": [
+        "About AshMysql": [
           "CHANGELOG.md"
         ]
       ],
       groups_for_modules: [
-        AshSqlite: [
-          AshSqlite,
-          AshSqlite.Repo,
-          AshSqlite.DataLayer
+        AshMysql: [
+          AshMysql,
+          AshMysql.Repo,
+          AshMysql.DataLayer
         ],
         Utilities: [
-          AshSqlite.ManualRelationship
+          AshMysql.ManualRelationship
         ],
         Introspection: [
-          AshSqlite.DataLayer.Info,
-          AshSqlite.CustomExtension,
-          AshSqlite.CustomIndex,
-          AshSqlite.Reference,
-          AshSqlite.Statement
+          AshMysql.DataLayer.Info,
+          AshMysql.CustomExtension,
+          AshMysql.CustomIndex,
+          AshMysql.Reference,
+          AshMysql.Statement
         ],
         Types: [
-          AshSqlite.Type
+          AshMysql.Type
         ],
         Expressions: [
-          AshSqlite.Functions.Fragment,
-          AshSqlite.Functions.Like
+          AshMysql.Functions.Fragment,
+          AshMysql.Functions.Like
         ],
         Internals: ~r/.*/
       ]
@@ -187,17 +187,17 @@ defmodule AshSqlite.MixProject do
         "spark.replace_doc_links",
         "spark.cheat_sheets_in_search"
       ],
-      "spark.formatter": "spark.formatter --extensions AshSqlite.DataLayer",
-      "spark.cheat_sheets": "spark.cheat_sheets --extensions AshSqlite.DataLayer",
+      "spark.formatter": "spark.formatter --extensions AshMysql.DataLayer",
+      "spark.cheat_sheets": "spark.cheat_sheets --extensions AshMysql.DataLayer",
       "spark.cheat_sheets_in_search":
-        "spark.cheat_sheets_in_search --extensions AshSqlite.DataLayer",
-      "test.generate_migrations": "ash_sqlite.generate_migrations",
-      "test.check_migrations": "ash_sqlite.generate_migrations --check",
-      "test.migrate": "ash_sqlite.migrate",
-      "test.rollback": "ash_sqlite.rollback",
-      "test.create": "ash_sqlite.create",
+        "spark.cheat_sheets_in_search --extensions AshMysql.DataLayer",
+      "test.generate_migrations": "ash_mysql.generate_migrations",
+      "test.check_migrations": "ash_mysql.generate_migrations --check",
+      "test.migrate": "ash_mysql.migrate",
+      "test.rollback": "ash_mysql.rollback",
+      "test.create": "ash_mysql.create",
       "test.reset": ["test.drop", "test.create", "test.migrate"],
-      "test.drop": "ash_sqlite.drop"
+      "test.drop": "ash_mysql.drop"
     ]
   end
 end

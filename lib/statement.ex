@@ -1,4 +1,4 @@
-defmodule AshSqlite.Statement do
+defmodule AshMysql.Statement do
   @moduledoc "Represents a custom statement to be run in generated migrations"
 
   @fields [

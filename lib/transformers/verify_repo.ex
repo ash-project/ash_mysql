@@ -1,4 +1,4 @@
-defmodule AshSqlite.Transformers.VerifyRepo do
+defmodule AshMysql.Transformers.VerifyRepo do
   @moduledoc false
   use Spark.Dsl.Transformer
   alias Spark.Dsl.Transformer
@@ -6,7 +6,7 @@ defmodule AshSqlite.Transformers.VerifyRepo do
   def after_compile?, do: true
 
   def transform(dsl) do
-    repo = Transformer.get_option(dsl, [:sqlite], :repo)
+    repo = Transformer.get_option(dsl, [:mysql], :repo)
 
     cond do
       match?({:error, _}, Code.ensure_compiled(repo)) ->

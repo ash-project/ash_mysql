@@ -48,7 +48,7 @@
   ],
   "table": "post_ratings",
   "hash": "73A4E0A79F5A6449FFE48E2469FDC275723EF207780DA9027F3BBE3119DC0FFA",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [],
   "base_filter": null,
   "multitenancy": {

@@ -1,13 +1,13 @@
-# What is AshSqlite?
+# What is AshMysql?
 
-AshSqlite is the SQLite `Ash.DataLayer` for [Ash Framework](https://hexdocs.pm/ash). This doesn't have all of the features of [AshPostgres](https://hexdocs.pm/ash_postgres), but it does support most of the features of Ash data layers. The main feature missing is Aggregate support.
+AshMysql is the MySQL `Ash.DataLayer` for [Ash Framework](https://hexdocs.pm/ash). This doesn't have all of the features of [AshPostgres](https://hexdocs.pm/ash_postgres), but it does support most of the features of Ash data layers. The main feature missing is Aggregate support.
 
-Use this to persist records in a SQLite table. For example, the resource below would be persisted in a table called `tweets`:
+Use this to persist records in a MySQL table. For example, the resource below would be persisted in a table called `tweets`:
 
 ```elixir
 defmodule MyApp.Tweet do
   use Ash.Resource,
-    data_layer: AshSQLite.DataLayer
+    data_layer: AshMysql.DataLayer
 
   attributes do
     integer_primary_key :id
@@ -18,7 +18,7 @@ defmodule MyApp.Tweet do
     belongs_to :author, MyApp.User
   end
 
-  sqlite do
+  mysql do
     table "tweets"
     repo MyApp.Repo
   end

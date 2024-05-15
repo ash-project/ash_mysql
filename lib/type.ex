@@ -1,19 +1,19 @@
-defmodule AshSqlite.Type do
+defmodule AshMysql.Type do
   @moduledoc """
-  Sqlite specific callbacks for `Ash.Type`.
+  MySQL specific callbacks for `Ash.Type`.
 
   Use this in addition to `Ash.Type`.
   """
 
-  @callback value_to_sqlite_default(Ash.Type.t(), Ash.Type.constraints(), term) ::
+  @callback value_to_mysql_default(Ash.Type.t(), Ash.Type.constraints(), term) ::
               {:ok, String.t()} | :error
 
   defmacro __using__(_) do
     quote do
-      @behaviour AshSqlite.Type
-      def value_to_sqlite_default(_, _, _), do: :error
+      @behaviour AshMysql.Type
+      def value_to_mysql_default(_, _, _), do: :error
 
-      defoverridable value_to_sqlite_default: 3
+      defoverridable value_to_mysql_default: 3
     end
   end
 end

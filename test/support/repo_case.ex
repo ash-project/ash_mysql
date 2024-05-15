@@ -1,4 +1,4 @@
-defmodule AshSqlite.RepoCase do
+defmodule AshMysql.RepoCase do
   @moduledoc false
   use ExUnit.CaseTemplate
 
@@ -6,21 +6,21 @@ defmodule AshSqlite.RepoCase do
 
   using do
     quote do
-      alias AshSqlite.TestRepo
+      alias AshMysql.TestRepo
 
       import Ecto
       import Ecto.Query
-      import AshSqlite.RepoCase
+      import AshMysql.RepoCase
 
       # and any other stuff
     end
   end
 
   setup tags do
-    :ok = Sandbox.checkout(AshSqlite.TestRepo)
+    :ok = Sandbox.checkout(AshMysql.TestRepo)
 
     unless tags[:async] do
-      Sandbox.mode(AshSqlite.TestRepo, {:shared, self()})
+      Sandbox.mode(AshMysql.TestRepo, {:shared, self()})
     end
 
     :ok

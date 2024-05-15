@@ -63,7 +63,7 @@
   ],
   "table": "post_links",
   "hash": "6ADC017A784C2619574DE223A15A29ECAF6D67C0543DF67A8E4E215E8F8ED300",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [
     {
       "name": "unique_link",

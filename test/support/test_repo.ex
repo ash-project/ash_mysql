@@ -1,5 +1,5 @@
-defmodule AshSqlite.TestRepo do
+defmodule AshMysql.TestRepo do
   @moduledoc false
-  use AshSqlite.Repo,
-    otp_app: :ash_sqlite
+  use AshMysql.Repo,
+    otp_app: :ash_mysql
 end

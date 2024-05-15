@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.AshSqlite.GenerateMigrations do
+defmodule Mix.Tasks.AshMysql.GenerateMigrations do
   @moduledoc """
   Generates migrations, and stores a snapshot of your resources.
 
@@ -83,13 +83,13 @@ defmodule Mix.Tasks.AshSqlite.GenerateMigrations do
         ]
       )
 
-    domains = AshSqlite.Mix.Helpers.domains!(opts, args)
+    domains = AshMysql.Mix.Helpers.domains!(opts, args)
 
     opts =
       opts
       |> Keyword.put(:format, !opts[:no_format])
       |> Keyword.delete(:no_format)
 
-    AshSqlite.MigrationGenerator.generate(domains, opts)
+    AshMysql.MigrationGenerator.generate(domains, opts)
   end
 end

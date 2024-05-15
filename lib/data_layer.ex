@@ -1,4 +1,4 @@
-defmodule AshSqlite.DataLayer do
+defmodule AshMysql.DataLayer do
   @index %Spark.Dsl.Entity{
     name: :index,
     describe: """
@@ -7,9 +7,9 @@ defmodule AshSqlite.DataLayer do
     examples: [
       "index [\"column\", \"column2\"], unique: true, where: \"thing = TRUE\""
     ],
-    target: AshSqlite.CustomIndex,
-    schema: AshSqlite.CustomIndex.schema(),
-    transform: {AshSqlite.CustomIndex, :transform, []},
+    target: AshMysql.CustomIndex,
+    schema: AshMysql.CustomIndex.schema(),
+    transform: {AshMysql.CustomIndex, :transform, []},
     args: [:fields]
   }
 
@@ -46,8 +46,8 @@ defmodule AshSqlite.DataLayer do
       end
       """
     ],
-    target: AshSqlite.Statement,
-    schema: AshSqlite.Statement.schema(),
+    target: AshMysql.Statement,
+    schema: AshMysql.Statement.schema(),
     args: [:name]
   }
 
@@ -97,8 +97,8 @@ defmodule AshSqlite.DataLayer do
       "reference :post, on_delete: :delete, on_update: :update, name: \"comments_to_posts_fkey\""
     ],
     args: [:relationship],
-    target: AshSqlite.Reference,
-    schema: AshSqlite.Reference.schema()
+    target: AshMysql.Reference,
+    schema: AshMysql.Reference.schema()
   }
 
   @references %Spark.Dsl.Section{
@@ -171,10 +171,10 @@ defmodule AshSqlite.DataLayer do
     ]
   }
 
-  @sqlite %Spark.Dsl.Section{
-    name: :sqlite,
+  @mysql %Spark.Dsl.Section{
+    name: :mysql,
     describe: """
-    Sqlite data layer configuration
+    MySQL data layer configuration
     """,
     sections: [
       @custom_indexes,
@@ -186,7 +186,7 @@ defmodule AshSqlite.DataLayer do
     ],
     examples: [
       """
-      sqlite do
+      mysql do
         repo MyApp.Repo
         table "organizations"
       end
@@ -197,7 +197,7 @@ defmodule AshSqlite.DataLayer do
         type: :atom,
         required: true,
         doc:
-          "The repo that will be used to fetch your data. See the `AshSqlite.Repo` documentation for more"
+          "The repo that will be used to fetch your data. See the `AshMysql.Repo` documentation for more"
       ],
       migrate?: [
         type: :boolean,
@@ -284,27 +284,27 @@ defmodule AshSqlite.DataLayer do
 
   @behaviour Ash.DataLayer
 
-  @sections [@sqlite]
+  @sections [@mysql]
 
   @moduledoc """
-  A sqlite data layer that leverages Ecto's sqlite capabilities.
+  A mysql data layer that leverages Ecto's mysql capabilities.
   """
 
   use Spark.Dsl.Extension,
     sections: @sections,
     transformers: [
-      AshSqlite.Transformers.ValidateReferences,
-      AshSqlite.Transformers.VerifyRepo,
-      AshSqlite.Transformers.EnsureTableOrPolymorphic
+      AshMysql.Transformers.ValidateReferences,
+      AshMysql.Transformers.VerifyRepo,
+      AshMysql.Transformers.EnsureTableOrPolymorphic
     ]
 
   def migrate(args) do
     # TODO: take args that we care about
-    Mix.Task.run("ash_sqlite.migrate", args)
+    Mix.Task.run("ash_mysql.migrate", args)
   end
 
   def rollback(args) do
-    repos = AshSqlite.Mix.Helpers.repos!([], args)
+    repos = AshMysql.Mix.Helpers.repos!([], args)
 
     show_for_repo? = Enum.count_until(repos, 2) == 2
 
@@ -316,7 +316,7 @@ defmodule AshSqlite.DataLayer do
           ""
         end
 
-      migrations_path = AshSqlite.Mix.Helpers.migrations_path([], repo)
+      migrations_path = AshMysql.Mix.Helpers.migrations_path([], repo)
 
       files =
         migrations_path
@@ -364,18 +364,18 @@ defmodule AshSqlite.DataLayer do
 
   def codegen(args) do
     # TODO: take args that we care about
-    Mix.Task.run("ash_sqlite.generate_migrations", args)
+    Mix.Task.run("ash_mysql.generate_migrations", args)
   end
 
   def setup(args) do
     # TODO: take args that we care about
-    Mix.Task.run("ash_sqlite.create", args)
-    Mix.Task.run("ash_sqlite.migrate", args)
+    Mix.Task.run("ash_mysql.create", args)
+    Mix.Task.run("ash_mysql.migrate", args)
   end
 
   def tear_down(args) do
     # TODO: take args that we care about
-    Mix.Task.run("ash_sqlite.drop", args)
+    Mix.Task.run("ash_mysql.drop", args)
   end
 
   import Ecto.Query, only: [from: 2, subquery: 1]
@@ -397,7 +397,7 @@ defmodule AshSqlite.DataLayer do
     other_data_layer = Ash.DataLayer.data_layer(other_resource)
 
     data_layer == other_data_layer and
-      AshSqlite.DataLayer.Info.repo(resource) == AshSqlite.DataLayer.Info.repo(other_resource)
+      AshMysql.DataLayer.Info.repo(resource) == AshMysql.DataLayer.Info.repo(other_resource)
   end
 
   def can?(_resource, {:lateral_join, _}) do
@@ -428,7 +428,7 @@ defmodule AshSqlite.DataLayer do
   def can?(_, :multitenancy), do: false
 
   def can?(_, {:filter_relationship, %{manual: {module, _}}}) do
-    Spark.implements_behaviour?(module, AshSqlite.ManualRelationship)
+    Spark.implements_behaviour?(module, AshMysql.ManualRelationship)
   end
 
   def can?(_, {:filter_relationship, _}), do: true
@@ -455,7 +455,7 @@ defmodule AshSqlite.DataLayer do
 
   @impl true
   def source(resource) do
-    AshSqlite.DataLayer.Info.table(resource) || ""
+    AshMysql.DataLayer.Info.table(resource) || ""
   end
 
   @impl true
@@ -477,7 +477,7 @@ defmodule AshSqlite.DataLayer do
      AshSql.Bindings.default_bindings(
        data_layer_query,
        resource,
-       AshSqlite.SqlImplementation,
+       AshMysql.SqlImplementation,
        context
      )}
   end
@@ -496,7 +496,7 @@ defmodule AshSqlite.DataLayer do
   @impl true
   def run_aggregate_query(query, aggregates, resource) do
     {exists, aggregates} = Enum.split_with(aggregates, &(&1.kind == :exists))
-    query = AshSql.Bindings.default_bindings(query, resource, AshSqlite.SqlImplementation)
+    query = AshSql.Bindings.default_bindings(query, resource, AshMysql.SqlImplementation)
 
     query =
       if query.limit do
@@ -594,7 +594,7 @@ defmodule AshSqlite.DataLayer do
             %{query | windows: Keyword.delete(query.windows, :order)}
           end
 
-        if AshSqlite.DataLayer.Info.polymorphic?(resource) && no_table?(query) do
+        if AshMysql.DataLayer.Info.polymorphic?(resource) && no_table?(query) do
           raise_table_error!(resource, :read)
         else
           primary_key = Ash.Resource.Info.primary_key(resource)
@@ -630,14 +630,14 @@ defmodule AshSqlite.DataLayer do
   @impl true
   def functions(_resource) do
     [
-      AshSqlite.Functions.Like,
-      AshSqlite.Functions.ILike
+      AshMysql.Functions.Like,
+      AshMysql.Functions.ILike
     ]
   end
 
   @impl true
   def resource_to_query(resource, _) do
-    from(row in {AshSqlite.DataLayer.Info.table(resource) || "", resource}, [])
+    from(row in {AshMysql.DataLayer.Info.table(resource) || "", resource}, [])
   end
 
   @impl true
@@ -662,7 +662,7 @@ defmodule AshSqlite.DataLayer do
 
           # query =
           #  query
-          #  |> AshSql.Bindings.default_bindings(resource, AshSqlite.SqlImplementation)
+          #  |> AshSql.Bindings.default_bindings(resource, AshMysql.SqlImplementation)
 
           # upsert_set =
           #  upsert_set(resource, changesets, options)
@@ -997,7 +997,7 @@ defmodule AshSqlite.DataLayer do
 
   defp find_custom_index_message(resource, names) do
     resource
-    |> AshSqlite.DataLayer.Info.custom_indexes()
+    |> AshMysql.DataLayer.Info.custom_indexes()
     |> Enum.find(fn %{fields: fields} ->
       fields |> Enum.map(&to_string/1) |> Enum.sort() ==
         names |> Enum.map(&to_string/1) |> Enum.sort()
@@ -1025,10 +1025,10 @@ defmodule AshSqlite.DataLayer do
   end
 
   defp set_table(record, changeset, operation, table_error?) do
-    if AshSqlite.DataLayer.Info.polymorphic?(record.__struct__) do
+    if AshMysql.DataLayer.Info.polymorphic?(record.__struct__) do
       table =
         changeset.context[:data_layer][:table] ||
-          AshSqlite.DataLayer.Info.table(record.__struct__)
+          AshMysql.DataLayer.Info.table(record.__struct__)
 
       if table do
         Ecto.put_meta(record, source: table)
@@ -1109,7 +1109,7 @@ defmodule AshSqlite.DataLayer do
 
   defp add_exclusion_constraints(changeset, resource) do
     resource
-    |> AshSqlite.DataLayer.Info.exclusion_constraint_names()
+    |> AshMysql.DataLayer.Info.exclusion_constraint_names()
     |> Enum.reduce(changeset, fn constraint, changeset ->
       case constraint do
         {key, name} ->
@@ -1141,7 +1141,7 @@ defmodule AshSqlite.DataLayer do
                                    name: relationship_name
                                  },
                                  changeset ->
-      case AshSqlite.DataLayer.Info.reference(resource, relationship_name) do
+      case AshMysql.DataLayer.Info.reference(resource, relationship_name) do
         %{name: name} when not is_nil(name) ->
           Ecto.Changeset.foreign_key_constraint(changeset, destination_attribute,
             name: name,
@@ -1150,7 +1150,7 @@ defmodule AshSqlite.DataLayer do
 
         _ ->
           Ecto.Changeset.foreign_key_constraint(changeset, destination_attribute,
-            name: "#{AshSqlite.DataLayer.Info.table(source)}_#{source_attribute}_fkey",
+            name: "#{AshMysql.DataLayer.Info.table(source)}_#{source_attribute}_fkey",
             message: "would leave records behind"
           )
       end
@@ -1165,7 +1165,7 @@ defmodule AshSqlite.DataLayer do
 
   defp add_configured_foreign_key_constraints(changeset, resource) do
     resource
-    |> AshSqlite.DataLayer.Info.foreign_key_names()
+    |> AshMysql.DataLayer.Info.foreign_key_names()
     |> case do
       {m, f, a} -> List.wrap(apply(m, f, [changeset | a]))
       value -> List.wrap(value)
@@ -1185,7 +1185,7 @@ defmodule AshSqlite.DataLayer do
       |> Ash.Resource.Info.identities()
       |> Enum.reduce(changeset, fn identity, changeset ->
         name =
-          AshSqlite.DataLayer.Info.identity_index_names(resource)[identity.name] ||
+          AshMysql.DataLayer.Info.identity_index_names(resource)[identity.name] ||
             "#{table(resource, ash_changeset)}_#{identity.name}_index"
 
         opts =
@@ -1200,7 +1200,7 @@ defmodule AshSqlite.DataLayer do
 
     changeset =
       resource
-      |> AshSqlite.DataLayer.Info.custom_indexes()
+      |> AshMysql.DataLayer.Info.custom_indexes()
       |> Enum.reduce(changeset, fn index, changeset ->
         opts =
           if index.message do
@@ -1214,7 +1214,7 @@ defmodule AshSqlite.DataLayer do
 
     names =
       resource
-      |> AshSqlite.DataLayer.Info.unique_index_names()
+      |> AshMysql.DataLayer.Info.unique_index_names()
       |> case do
         {m, f, a} -> List.wrap(apply(m, f, [changeset | a]))
         value -> List.wrap(value)
@@ -1271,9 +1271,9 @@ defmodule AshSqlite.DataLayer do
   defp conflict_target(resource, keys) do
     if Ash.Resource.Info.base_filter(resource) do
       base_filter_sql =
-        AshSqlite.DataLayer.Info.base_filter_sql(resource) ||
+        AshMysql.DataLayer.Info.base_filter_sql(resource) ||
           raise """
-          Cannot use upserts with resources that have a base_filter without also adding `base_filter_sql` in the sqlite section.
+          Cannot use upserts with resources that have a base_filter without also adding `base_filter_sql` in the mysql section.
           """
 
       sources =
@@ -1362,7 +1362,7 @@ defmodule AshSqlite.DataLayer do
         query
         |> AshSql.Bindings.default_bindings(
           resource,
-          AshSqlite.SqlImplementation,
+          AshMysql.SqlImplementation,
           changeset.context
         )
         # |> Ecto.Query.select(^select)
@@ -1460,7 +1460,7 @@ defmodule AshSqlite.DataLayer do
 
   @impl true
   def select(query, select, resource) do
-    query = AshSql.Bindings.default_bindings(query, resource, AshSqlite.SqlImplementation)
+    query = AshSql.Bindings.default_bindings(query, resource, AshMysql.SqlImplementation)
 
     {:ok,
      from(row in query,
@@ -1549,15 +1549,15 @@ defmodule AshSqlite.DataLayer do
 
   @impl true
   def rollback(resource, term) do
-    AshSqlite.DataLayer.Info.repo(resource).rollback(term)
+    AshMysql.DataLayer.Info.repo(resource).rollback(term)
   end
 
   defp table(resource, changeset) do
-    changeset.context[:data_layer][:table] || AshSqlite.DataLayer.Info.table(resource)
+    changeset.context[:data_layer][:table] || AshMysql.DataLayer.Info.table(resource)
   end
 
   defp raise_table_error!(resource, operation) do
-    if AshSqlite.DataLayer.Info.polymorphic?(resource) do
+    if AshMysql.DataLayer.Info.polymorphic?(resource) do
       raise """
       Could not determine table for #{operation} on #{inspect(resource)}.
 
@@ -1572,15 +1572,15 @@ defmodule AshSqlite.DataLayer do
   end
 
   defp dynamic_repo(resource, %{__ash_bindings__: %{context: %{data_layer: %{repo: repo}}}}) do
-    repo || AshSqlite.DataLayer.Info.repo(resource)
+    repo || AshMysql.DataLayer.Info.repo(resource)
   end
 
   defp dynamic_repo(resource, %{context: %{data_layer: %{repo: repo}}}) do
-    repo || AshSqlite.DataLayer.Info.repo(resource)
+    repo || AshMysql.DataLayer.Info.repo(resource)
   end
 
   defp dynamic_repo(resource, _) do
-    AshSqlite.DataLayer.Info.repo(resource)
+    AshMysql.DataLayer.Info.repo(resource)
   end
 
   defp resolve_source(resource, changeset) do

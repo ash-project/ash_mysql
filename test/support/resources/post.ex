@@ -1,8 +1,8 @@
-defmodule AshSqlite.Test.Post do
+defmodule AshMysql.Test.Post do
   @moduledoc false
   use Ash.Resource,
-    domain: AshSqlite.Test.Domain,
-    data_layer: AshSqlite.DataLayer,
+    domain: AshMysql.Test.Domain,
+    data_layer: AshMysql.DataLayer,
     authorizers: [
       Ash.Policy.Authorizer
     ]
@@ -14,9 +14,9 @@ defmodule AshSqlite.Test.Post do
     end
   end
 
-  sqlite do
+  mysql do
     table("posts")
-    repo(AshSqlite.TestRepo)
+    repo(AshMysql.TestRepo)
     base_filter_sql("type = 'sponsored'")
 
     custom_indexes do
@@ -75,10 +75,10 @@ defmodule AshSqlite.Test.Post do
     attribute(:type, :atom, default: :sponsored, writable?: false)
     attribute(:price, :integer, public?: true)
     attribute(:decimal, :decimal, default: Decimal.new(0), public?: true)
-    attribute(:status, AshSqlite.Test.Types.Status, public?: true)
-    attribute(:status_enum, AshSqlite.Test.Types.StatusEnum, public?: true)
+    attribute(:status, AshMysql.Test.Types.Status, public?: true)
+    attribute(:status_enum, AshMysql.Test.Types.StatusEnum, public?: true)
 
-    attribute(:status_enum_no_cast, AshSqlite.Test.Types.StatusEnumNoCast,
+    attribute(:status_enum_no_cast, AshMysql.Test.Types.StatusEnumNoCast,
       source: :status_enum,
       public?: true
     )
@@ -98,38 +98,38 @@ defmodule AshSqlite.Test.Post do
   end
 
   relationships do
-    belongs_to :organization, AshSqlite.Test.Organization do
+    belongs_to :organization, AshMysql.Test.Organization do
       public?(true)
       attribute_writable?(true)
     end
 
-    belongs_to(:author, AshSqlite.Test.Author, public?: true)
+    belongs_to(:author, AshMysql.Test.Author, public?: true)
 
-    has_many(:comments, AshSqlite.Test.Comment, destination_attribute: :post_id, public?: true)
+    has_many(:comments, AshMysql.Test.Comment, destination_attribute: :post_id, public?: true)
 
-    has_many :comments_matching_post_title, AshSqlite.Test.Comment do
+    has_many :comments_matching_post_title, AshMysql.Test.Comment do
       public?(true)
       filter(expr(title == parent_expr(title)))
     end
 
-    has_many :popular_comments, AshSqlite.Test.Comment do
+    has_many :popular_comments, AshMysql.Test.Comment do
       public?(true)
       destination_attribute(:post_id)
       filter(expr(likes > 10))
     end
 
-    has_many :comments_containing_title, AshSqlite.Test.Comment do
+    has_many :comments_containing_title, AshMysql.Test.Comment do
       public?(true)
-      manual(AshSqlite.Test.Post.CommentsContainingTitle)
+      manual(AshMysql.Test.Post.CommentsContainingTitle)
     end
 
-    has_many(:ratings, AshSqlite.Test.Rating,
+    has_many(:ratings, AshMysql.Test.Rating,
       public?: true,
       destination_attribute: :resource_id,
       relationship_context: %{data_layer: %{table: "post_ratings"}}
     )
 
-    has_many(:post_links, AshSqlite.Test.PostLink,
+    has_many(:post_links, AshMysql.Test.PostLink,
       public?: true,
       destination_attribute: :source_post_id,
       filter: [state: :active]
@@ -137,13 +137,13 @@ defmodule AshSqlite.Test.Post do
 
     many_to_many(:linked_posts, __MODULE__,
       public?: true,
-      through: AshSqlite.Test.PostLink,
+      through: AshMysql.Test.PostLink,
       join_relationship: :post_links,
       source_attribute_on_join_resource: :source_post_id,
       destination_attribute_on_join_resource: :destination_post_id
     )
 
-    has_many(:views, AshSqlite.Test.PostView, public?: true)
+    has_many(:views, AshMysql.Test.PostView, public?: true)
   end
 
   validations do
@@ -167,7 +167,7 @@ defmodule AshSqlite.Test.Post do
 
     calculate(
       :calc_returning_json,
-      AshSqlite.Test.Money,
+      AshMysql.Test.Money,
       expr(
         fragment("""
         '{"amount":100, "currency": "usd"}'

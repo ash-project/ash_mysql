@@ -1,12 +1,12 @@
-defmodule AshSqlite.Test.Profile do
+defmodule AshMysql.Test.Profile do
   @moduledoc false
   use Ash.Resource,
-    domain: AshSqlite.Test.Domain,
-    data_layer: AshSqlite.DataLayer
+    domain: AshMysql.Test.Domain,
+    data_layer: AshMysql.DataLayer
 
-  sqlite do
+  mysql do
     table("profile")
-    repo(AshSqlite.TestRepo)
+    repo(AshMysql.TestRepo)
   end
 
   attributes do
@@ -20,6 +20,6 @@ defmodule AshSqlite.Test.Profile do
   end
 
   relationships do
-    belongs_to(:author, AshSqlite.Test.Author, public?: true)
+    belongs_to(:author, AshMysql.Test.Author, public?: true)
   end
 end

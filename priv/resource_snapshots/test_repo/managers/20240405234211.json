@@ -78,7 +78,7 @@
   ],
   "table": "managers",
   "hash": "1A4EFC8497F6A73543858892D6324407A7060AC2585EDCA9A759D1E8AF509DEF",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [
     {
       "name": "uniq_code",

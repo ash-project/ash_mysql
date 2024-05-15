@@ -1,4 +1,4 @@
-defmodule AshSqlite.MigrationGenerator.Operation do
+defmodule AshMysql.MigrationGenerator.Operation do
   @moduledoc false
 
   defmodule Helper do
@@ -196,7 +196,7 @@ defmodule AshSqlite.MigrationGenerator.Operation do
             multitenancy: multitenancy
           } = op
         ) do
-      AshSqlite.MigrationGenerator.Operation.RemoveAttribute.up(%{
+      AshMysql.MigrationGenerator.Operation.RemoveAttribute.up(%{
         op
         | attribute: attribute,
           table: table,
@@ -275,7 +275,7 @@ defmodule AshSqlite.MigrationGenerator.Operation do
           new_attribute: attribute
         }) do
       type_or_reference =
-        if AshSqlite.MigrationGenerator.has_reference?(multitenancy, attribute) and
+        if AshMysql.MigrationGenerator.has_reference?(multitenancy, attribute) and
              Map.get(old_attribute, :references) != Map.get(attribute, :references) do
           reference(multitenancy, attribute)
         else
@@ -443,11 +443,11 @@ defmodule AshSqlite.MigrationGenerator.Operation do
       """
 
       contents =
-        %AshSqlite.MigrationGenerator.Operation.AddAttribute{
+        %AshMysql.MigrationGenerator.Operation.AddAttribute{
           attribute: attribute,
           multitenancy: multitenancy
         }
-        |> AshSqlite.MigrationGenerator.Operation.AddAttribute.up()
+        |> AshMysql.MigrationGenerator.Operation.AddAttribute.up()
         |> String.split("\n")
         |> Enum.map_join("\n", &"# #{&1}")
 
@@ -455,8 +455,8 @@ defmodule AshSqlite.MigrationGenerator.Operation do
     end
 
     def down(%{attribute: attribute, multitenancy: multitenancy, table: table}) do
-      AshSqlite.MigrationGenerator.Operation.AddAttribute.up(
-        %AshSqlite.MigrationGenerator.Operation.AddAttribute{
+      AshMysql.MigrationGenerator.Operation.AddAttribute.up(
+        %AshMysql.MigrationGenerator.Operation.AddAttribute{
           attribute: attribute,
           table: table,
           multitenancy: multitenancy
@@ -599,7 +599,7 @@ defmodule AshSqlite.MigrationGenerator.Operation do
     end
 
     def down(%{index: index, table: table, multitenancy: multitenancy}) do
-      index_name = AshSqlite.CustomIndex.name(table, index)
+      index_name = AshMysql.CustomIndex.name(table, index)
 
       keys =
         case multitenancy.strategy do
@@ -646,7 +646,7 @@ defmodule AshSqlite.MigrationGenerator.Operation do
     import Helper
 
     def up(%{index: index, table: table, multitenancy: multitenancy}) do
-      index_name = AshSqlite.CustomIndex.name(table, index)
+      index_name = AshMysql.CustomIndex.name(table, index)
 
       keys =
         case multitenancy.strategy do

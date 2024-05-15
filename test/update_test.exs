@@ -1,6 +1,6 @@
-defmodule AshSqlite.Test.UpdateTest do
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.Post
+defmodule AshMysql.Test.UpdateTest do
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.Post
 
   require Ash.Query
 

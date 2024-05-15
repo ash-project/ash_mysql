@@ -1,4 +1,4 @@
-defmodule AshSqlite.Reference do
+defmodule AshMysql.Reference do
   @moduledoc "Represents the configuration of a reference (i.e foreign key)."
   defstruct [:relationship, :on_delete, :on_update, :name, :deferrable, ignore?: false]
 

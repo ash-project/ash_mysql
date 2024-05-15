@@ -1,6 +1,6 @@
-defmodule AshSqlite.Test.Account do
+defmodule AshMysql.Test.Account do
   @moduledoc false
-  use Ash.Resource, domain: AshSqlite.Test.Domain, data_layer: AshSqlite.DataLayer
+  use Ash.Resource, domain: AshMysql.Test.Domain, data_layer: AshMysql.DataLayer
 
   actions do
     default_accept(:*)
@@ -21,12 +21,12 @@ defmodule AshSqlite.Test.Account do
     )
   end
 
-  sqlite do
+  mysql do
     table "accounts"
-    repo(AshSqlite.TestRepo)
+    repo(AshMysql.TestRepo)
   end
 
   relationships do
-    belongs_to(:user, AshSqlite.Test.User, public?: true)
+    belongs_to(:user, AshMysql.Test.User, public?: true)
   end
 end

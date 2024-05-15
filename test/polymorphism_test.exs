@@ -1,6 +1,6 @@
-defmodule AshSqlite.PolymorphismTest do
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.{Post, Rating}
+defmodule AshMysql.PolymorphismTest do
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.{Post, Rating}
 
   require Ash.Query
 

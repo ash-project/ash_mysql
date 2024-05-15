@@ -1,6 +1,6 @@
-defmodule AshSqlite.CalculationTest do
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.{Account, Author, Comment, Post, User}
+defmodule AshMysql.CalculationTest do
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.{Account, Author, Comment, Post, User}
 
   require Ash.Query
 
@@ -257,7 +257,7 @@ defmodule AshSqlite.CalculationTest do
       })
       |> Ash.create!()
 
-    assert %AshSqlite.Test.Money{} =
+    assert %AshMysql.Test.Money{} =
              Post
              |> Ash.Changeset.for_create(:create, %{title: "match", price: 10_024})
              |> Ash.Changeset.manage_relationship(:author, author, type: :append_and_remove)
@@ -265,7 +265,7 @@ defmodule AshSqlite.CalculationTest do
              |> Ash.load!(:calc_returning_json)
              |> Map.get(:calc_returning_json)
 
-    assert [%AshSqlite.Test.Money{}] =
+    assert [%AshMysql.Test.Money{}] =
              author
              |> Ash.load!(posts: :calc_returning_json)
              |> Map.get(:posts)

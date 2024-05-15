@@ -1,7 +1,7 @@
-defmodule AshSqlite.EmbeddableResourceTest do
+defmodule AshMysql.EmbeddableResourceTest do
   @moduledoc false
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.{Author, Bio, Post}
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.{Author, Bio, Post}
 
   require Ash.Query
 
@@ -15,7 +15,7 @@ defmodule AshSqlite.EmbeddableResourceTest do
   end
 
   test "calculations can load json", %{post: post} do
-    assert %{calc_returning_json: %AshSqlite.Test.Money{amount: 100, currency: :usd}} =
+    assert %{calc_returning_json: %AshMysql.Test.Money{amount: 100, currency: :usd}} =
              Ash.load!(post, :calc_returning_json)
   end
 

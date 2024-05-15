@@ -1,12 +1,12 @@
-defmodule AshSqlite.Test.IntegerPost do
+defmodule AshMysql.Test.IntegerPost do
   @moduledoc false
   use Ash.Resource,
-    domain: AshSqlite.Test.Domain,
-    data_layer: AshSqlite.DataLayer
+    domain: AshMysql.Test.Domain,
+    data_layer: AshMysql.DataLayer
 
-  sqlite do
+  mysql do
     table "integer_posts"
-    repo AshSqlite.TestRepo
+    repo AshMysql.TestRepo
   end
 
   actions do

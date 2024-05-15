@@ -20,7 +20,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-ash_sqlite-*.tar
+ash_mysql-*.tar
 
 test_migration_path
 test_snapshots_path

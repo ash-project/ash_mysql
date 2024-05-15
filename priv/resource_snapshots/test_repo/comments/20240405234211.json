@@ -103,7 +103,7 @@
   ],
   "table": "comments",
   "hash": "4F081363C965C68A8E3CC755BCA058C9DC0FB18F5BE5B44FEBEB41B787727702",
-  "repo": "Elixir.AshSqlite.TestRepo",
+  "repo": "Elixir.AshMysql.TestRepo",
   "identities": [],
   "base_filter": null,
   "multitenancy": {

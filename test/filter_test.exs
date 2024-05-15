@@ -1,6 +1,6 @@
-defmodule AshSqlite.FilterTest do
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.{Author, Comment, Post}
+defmodule AshMysql.FilterTest do
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.{Author, Comment, Post}
 
   require Ash.Query
 

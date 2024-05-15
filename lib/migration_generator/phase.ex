@@ -1,11 +1,11 @@
-defmodule AshSqlite.MigrationGenerator.Phase do
+defmodule AshMysql.MigrationGenerator.Phase do
   @moduledoc false
 
   defmodule Create do
     @moduledoc false
     defstruct [:table, :multitenancy, operations: [], commented?: false]
 
-    import AshSqlite.MigrationGenerator.Operation.Helper, only: [as_atom: 1]
+    import AshMysql.MigrationGenerator.Operation.Helper, only: [as_atom: 1]
 
     def up(%{table: table, operations: operations}) do
       opts = ""
@@ -26,7 +26,7 @@ defmodule AshSqlite.MigrationGenerator.Phase do
     @moduledoc false
     defstruct [:table, :multitenancy, operations: [], commented?: false]
 
-    import AshSqlite.MigrationGenerator.Operation.Helper, only: [as_atom: 1]
+    import AshMysql.MigrationGenerator.Operation.Helper, only: [as_atom: 1]
 
     def up(%{table: table, operations: operations}) do
       body =

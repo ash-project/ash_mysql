@@ -1,4 +1,4 @@
-defmodule AshSqlite.Test.Types.Status do
+defmodule AshMysql.Test.Types.Status do
   @moduledoc false
   use Ash.Type.Enum, values: [:open, :closed]
 

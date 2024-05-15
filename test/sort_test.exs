@@ -1,7 +1,7 @@
-defmodule AshSqlite.SortTest do
+defmodule AshMysql.SortTest do
   @moduledoc false
-  use AshSqlite.RepoCase, async: false
-  alias AshSqlite.Test.{Comment, Post, PostLink}
+  use AshMysql.RepoCase, async: false
+  alias AshMysql.Test.{Comment, Post, PostLink}
 
   require Ash.Query
 

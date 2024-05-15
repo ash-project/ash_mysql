@@ -1,7 +1,7 @@
-defmodule Mix.Tasks.AshSqlite.Rollback do
+defmodule Mix.Tasks.AshMysql.Rollback do
   use Mix.Task
 
-  import AshSqlite.Mix.Helpers,
+  import AshMysql.Mix.Helpers,
     only: [migrations_path: 2]
 
   @shortdoc "Rolls back the repository migrations for all repositories in the provided (or configured) domains"
@@ -22,12 +22,12 @@ defmodule Mix.Tasks.AshSqlite.Rollback do
   ecto specific task, `mix ecto.migrate` and provide your repo name.
 
   ## Examples
-      mix ash_sqlite.rollback
-      mix ash_sqlite.rollback -r Custom.Repo
-      mix ash_sqlite.rollback -n 3
-      mix ash_sqlite.rollback --step 3
-      mix ash_sqlite.rollback -v 20080906120000
-      mix ash_sqlite.rollback --to 20080906120000
+      mix ash_mysql.rollback
+      mix ash_mysql.rollback -r Custom.Repo
+      mix ash_mysql.rollback -n 3
+      mix ash_mysql.rollback --step 3
+      mix ash_mysql.rollback -v 20080906120000
+      mix ash_mysql.rollback --to 20080906120000
 
   ## Command line options
     * `--domains` - the domains who's repos should be rolledback
@@ -55,7 +55,7 @@ defmodule Mix.Tasks.AshSqlite.Rollback do
         aliases: [n: :step, v: :to]
       )
 
-    repos = AshSqlite.Mix.Helpers.repos!(opts, args)
+    repos = AshMysql.Mix.Helpers.repos!(opts, args)
 
     repo_args =
       Enum.flat_map(repos, fn repo ->
@@ -64,8 +64,8 @@ defmodule Mix.Tasks.AshSqlite.Rollback do
 
     rest_opts =
       args
-      |> AshSqlite.Mix.Helpers.delete_arg("--domains")
-      |> AshSqlite.Mix.Helpers.delete_arg("--migrations-path")
+      |> AshMysql.Mix.Helpers.delete_arg("--domains")
+      |> AshMysql.Mix.Helpers.delete_arg("--migrations-path")
 
     Mix.Task.reenable("ecto.rollback")
 

@@ -1,47 +1,47 @@
-# Getting Started With AshSqlite
+# Getting Started With AshMysql
 
 ## Goals
 
 In this guide we will:
 
-1. Setup AshSqlite, which includes setting up [Ecto](https://hexdocs.pm/ecto/Ecto.html)
-2. Add AshSqlite to the resources created in [the Ash getting started guide](https://hexdocs.pm/ash/get-started.html)
-3. Show how the various features of AshSqlite can help you work quickly and cleanly against a sqlite database
-4. Highlight some of the more advanced features you can use when using AshSqlite.
+1. Setup AshMysql, which includes setting up [Ecto](https://hexdocs.pm/ecto/Ecto.html)
+2. Add AshMysql to the resources created in [the Ash getting started guide](https://hexdocs.pm/ash/get-started.html)
+3. Show how the various features of AshMysql can help you work quickly and cleanly against a mysql database
+4. Highlight some of the more advanced features you can use when using AshMysql.
 5. Point you to additional resources you may need on your journey
 
 ## Requirements
 
-- A working SQLite installation, with a sufficiently permissive user
+- A working MySQL installation, with a sufficiently permissive user
 - If you would like to follow along, you will need to add begin with [the Ash getting started guide](https://hexdocs.pm/ash/get-started.html)
 
 ## Steps
 
-### Add AshSqlite
+### Add AshMysql
 
-Add the `:ash_sqlite` dependency to your application
+Add the `:ash_mysql` dependency to your application
 
-`{:ash_sqlite, "~> 0.1.2"}`
+`{:ash_mysql, "~> 0.1.2"}`
 
-Add `:ash_sqlite` to your `.formatter.exs` file
+Add `:ash_mysql` to your `.formatter.exs` file
 
 ```elixir
 [
-  # import the formatter rules from `:ash_sqlite`
-  import_deps: [..., :ash_sqlite],
+  # import the formatter rules from `:ash_mysql`
+  import_deps: [..., :ash_mysql],
   inputs: [...]
 ]
 ```
 
 ### Create and configure your Repo
 
-Create `lib/helpdesk/repo.ex` with the following contents. `AshSqlite.Repo` is a thin wrapper around `Ecto.Repo`, so see their documentation for how to use it if you need to use it directly. For standard Ash usage, all you will need to do is configure your resources to use your repo.
+Create `lib/helpdesk/repo.ex` with the following contents. `AshMysql.Repo` is a thin wrapper around `Ecto.Repo`, so see their documentation for how to use it if you need to use it directly. For standard Ash usage, all you will need to do is configure your resources to use your repo.
 
 ```elixir
 # in lib/helpdesk/repo.ex
 
 defmodule Helpdesk.Repo do
-  use AshSqlite.Repo, otp_app: :helpdesk
+  use AshMysql.Repo, otp_app: :helpdesk
 end
 ```
 
@@ -128,18 +128,18 @@ And finally, add the repo to your application
     ...
 ```
 
-### Add AshSqlite to our resources
+### Add AshMysql to our resources
 
-Now we can add the data layer to our resources. The basic configuration for a resource requires the `d:AshSqlite.sqlite|table` and the `d:AshSqlite.sqlite|repo`.
+Now we can add the data layer to our resources. The basic configuration for a resource requires the `d:AshMysql.mysql|table` and the `d:AshMysql.mysql|repo`.
 
 ```elixir
 # in lib/helpdesk/support/resources/ticket.ex
 
   use Ash.Resource,
     domain: MyApp.Domain,
-    data_layer: AshSqlite.DataLayer
+    data_layer: AshMysql.DataLayer
 
-  sqlite do
+  mysql do
     table "tickets"
     repo Helpdesk.Repo
   end
@@ -150,9 +150,9 @@ Now we can add the data layer to our resources. The basic configuration for a re
 
   use Ash.Resource,
     domain: MyApp.Domain,
-    data_layer: AshSqlite.DataLayer
+    data_layer: AshMysql.DataLayer
 
-  sqlite do
+  mysql do
     table "representatives"
     repo Helpdesk.Repo
   end
@@ -160,25 +160,25 @@ Now we can add the data layer to our resources. The basic configuration for a re
 
 ### Create the database and tables
 
-First, we'll create the database with `mix ash_sqlite.create`.
+First, we'll create the database with `mix ash_mysql.create`.
 
-Then we will generate database migrations. This is one of the many ways that AshSqlite can save time and reduce complexity.
+Then we will generate database migrations. This is one of the many ways that AshMysql can save time and reduce complexity.
 
 ```bash
-mix ash_sqlite.generate_migrations --name add_tickets_and_representatives
+mix ash_mysql.generate_migrations --name add_tickets_and_representatives
 ```
 
 If you are unfamiliar with database migrations, it is a good idea to get a rough idea of what they are and how they work. See the links at the bottom of this guide for more. A rough overview of how migrations work is that each time you need to make changes to your database, they are saved as small, reproducible scripts that can be applied in order. This is necessary both for clean deploys as well as working with multiple developers making changes to the structure of a single database.
 
-Typically, you need to write these by hand. AshSqlite, however, will store snapshots each time you run the command to generate migrations and will figure out what migrations need to be created.
+Typically, you need to write these by hand. AshMysql, however, will store snapshots each time you run the command to generate migrations and will figure out what migrations need to be created.
 
 You should always look at the generated migrations to ensure that they look correct. Do so now by looking at the generated file in `priv/repo/migrations`.
 
 Finally, we will create the local database and apply the generated migrations:
 
 ```bash
-mix ash_sqlite.create
-mix ash_sqlite.migrate
+mix ash_mysql.create
+mix ash_mysql.migrate
 ```
 
 ### Try it out
@@ -212,7 +212,7 @@ for i <- 0..5 do
 end
 ```
 
-And now we can read that data. You should see some debug logs that show the sql queries AshSqlite is generating.
+And now we can read that data. You should see some debug logs that show the sql queries AshMysql is generating.
 
 ```elixir
 require Ash.Query
@@ -232,7 +232,7 @@ Helpdesk.Support.Ticket
 |> Helpdesk.Support.read!()
 ```
 
-And, naturally, now that we are storing this in sqlite, this database is persisted even if we stop/start our application. The nice thing, however, is that this was the _exact_ same code that we ran against our resources when they were backed by ETS.
+And, naturally, now that we are storing this in mysql, this database is persisted even if we stop/start our application. The nice thing, however, is that this was the _exact_ same code that we ran against our resources when they were backed by ETS.
 
 ### Calculations
 
@@ -270,8 +270,8 @@ When deploying, you will need to ensure that the file you are using in productio
 
 ### What next?
 
-- Check out the data layer docs: `AshSqlite.DataLayer`
+- Check out the data layer docs: `AshMysql.DataLayer`
 
-- [Ecto's documentation](https://hexdocs.pm/ecto/Ecto.html). AshSqlite (and much of Ash itself) is made possible by the amazing Ecto. If you find yourself looking for escape hatches when using Ash or ways to work directly with your database, you will want to know how Ecto works. Ash and AshSqlite intentionally do not hide Ecto, and in fact encourages its use whenever you need an escape hatch.
+- [Ecto's documentation](https://hexdocs.pm/ecto/Ecto.html). AshMysql (and much of Ash itself) is made possible by the amazing Ecto. If you find yourself looking for escape hatches when using Ash or ways to work directly with your database, you will want to know how Ecto works. Ash and AshMysql intentionally do not hide Ecto, and in fact encourages its use whenever you need an escape hatch.
 
-- [Ecto's Migration documentation](https://hexdocs.pm/ecto_sql/Ecto.Migration.html) read more about migrations. Even with the ash_sqlite migration generator, you will very likely need to modify your own migrations some day.
+- [Ecto's Migration documentation](https://hexdocs.pm/ecto_sql/Ecto.Migration.html) read more about migrations. Even with the ash_mysql migration generator, you will very likely need to modify your own migrations some day.

@@ -1,6 +1,6 @@
-defmodule AshSqlite.Functions.Like do
+defmodule AshMysql.Functions.Like do
   @moduledoc """
-  Maps to the builtin sqlite function `like`.
+  Maps to the builtin mysql function `like`.
   """
 
   use Ash.Query.Function, name: :like

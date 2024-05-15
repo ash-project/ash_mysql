@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.AshSqlite.Drop do
+defmodule Mix.Tasks.AshMysql.Drop do
   use Mix.Task
 
   @shortdoc "Drops the repository storage for the repos in the specified (or configured) domains"
@@ -23,8 +23,8 @@ defmodule Mix.Tasks.AshSqlite.Drop do
 
   ## Examples
 
-      mix ash_sqlite.drop
-      mix ash_sqlite.drop -r MyApp.Domain1,MyApp.Domain2
+      mix ash_mysql.drop
+      mix ash_mysql.drop -r MyApp.Domain1,MyApp.Domain2
 
   ## Command line options
 
@@ -42,14 +42,14 @@ defmodule Mix.Tasks.AshSqlite.Drop do
     {opts, _} = OptionParser.parse!(args, strict: @switches, aliases: @aliases)
     opts = Keyword.merge(@default_opts, opts)
 
-    repos = AshSqlite.Mix.Helpers.repos!(opts, args)
+    repos = AshMysql.Mix.Helpers.repos!(opts, args)
 
     repo_args =
       Enum.flat_map(repos, fn repo ->
         ["-r", to_string(repo)]
       end)
 
-    rest_opts = AshSqlite.Mix.Helpers.delete_arg(args, "--domains")
+    rest_opts = AshMysql.Mix.Helpers.delete_arg(args, "--domains")
 
     Mix.Task.reenable("ecto.drop")
 

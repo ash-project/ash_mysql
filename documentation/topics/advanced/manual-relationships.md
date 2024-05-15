@@ -18,7 +18,7 @@ end
 # implementation
 defmodule Helpdesk.Support.Ticket.Relationships.TicketsAboveThreshold do
   use Ash.Resource.ManualRelationship
-  use AshSqlite.ManualRelationship
+  use AshMysql.ManualRelationship
 
   require Ash.Query
   require Ecto.Query
@@ -49,7 +49,7 @@ defmodule Helpdesk.Support.Ticket.Relationships.TicketsAboveThreshold do
 
   # type is `:inner` or `:left`.
   # destination_query is what you should join to to add the destination to the query, i.e `join: dest in ^destination-query`
-  def ash_sqlite_join(query, _opts, current_binding, as_binding, :inner, destination_query) do
+  def ash_mysql_join(query, _opts, current_binding, as_binding, :inner, destination_query) do
     {:ok,
      Ecto.Query.from(_ in query,
        join: dest in ^destination_query,
@@ -59,7 +59,7 @@ defmodule Helpdesk.Support.Ticket.Relationships.TicketsAboveThreshold do
      )}
   end
 
-  def ash_sqlite_join(query, _opts, current_binding, as_binding, :left, destination_query) do
+  def ash_mysql_join(query, _opts, current_binding, as_binding, :left, destination_query) do
     {:ok,
      Ecto.Query.from(_ in query,
        left_join: dest in ^destination_query,
@@ -76,7 +76,7 @@ defmodule Helpdesk.Support.Ticket.Relationships.TicketsAboveThreshold do
   # as_binding is the binding that has already been created for your join. Access fields on it via `as(^as_binding)`
 
   # destination_query is what you should use as the basis of your query
-  def ash_sqlite_subquery(_opts, current_binding, as_binding, destination_query) do
+  def ash_mysql_subquery(_opts, current_binding, as_binding, destination_query) do
     {:ok,
      Ecto.Query.from(_ in destination_query,
        where: parent_as(^current_binding).id == as(^as_binding).representative_id,

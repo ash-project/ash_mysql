@@ -1,19 +1,19 @@
-defmodule AshSqlite.Repo do
+defmodule AshMysql.Repo do
   @moduledoc """
-  Resources that use `AshSqlite.DataLayer` use a `Repo` to access the database.
+  Resources that use `AshMysql.DataLayer` use a `Repo` to access the database.
 
   This repo is a thin wrapper around an `Ecto.Repo`.
 
   You can use `Ecto.Repo`'s `init/2` to configure your repo like normal, but
   instead of returning `{:ok, config}`, use `super(config)` to pass the
-  configuration to the `AshSqlite.Repo` implementation.
+  configuration to the `AshMysql.Repo` implementation.
   """
 
   @doc "Use this to inform the data layer about what extensions are installed"
   @callback installed_extensions() :: [String.t()]
 
   @doc """
-  Use this to inform the data layer about the oldest potential sqlite version it will be run on.
+  Use this to inform the data layer about the oldest potential mysql version it will be run on.
 
   Must be an integer greater than or equal to 13.
   """
@@ -32,7 +32,7 @@ defmodule AshSqlite.Repo do
         adapter: Ecto.Adapters.MyXQL,
         otp_app: otp_app
 
-      @behaviour AshSqlite.Repo
+      @behaviour AshMysql.Repo
 
       defoverridable insert: 2, insert: 1, insert!: 2, insert!: 1
 
