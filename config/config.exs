@@ -25,7 +25,9 @@ if Mix.env() == :test do
     username: "root",
     database: "ash_mysql_test",
     hostname: "localhost",
-    pool: Ecto.Adapters.SQL.Sandbox
+    pool: Ecto.Adapters.SQL.Sandbox,
+    charset: "utf8mb4",
+    collation: "utf8mb4_0900_as_cs"
 
   # sobelow_skip ["Config.Secrets"]
   config :ash_mysql, AshMysql.TestRepo, password: "root"
