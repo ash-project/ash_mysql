@@ -50,5 +50,5 @@ if Mix.env() == :test do
       AshMysql.Test.Domain
     ]
 
-  config :logger, level: :debug
+  config :logger, level: :warning
 end

@@ -752,7 +752,7 @@ defmodule AshMysql.DataLayer do
     reload_key = Ash.Resource.Info.primary_key(resource) |> Enum.at(0)
     keys_to_reload = entries |> Enum.map(&Map.get(&1, reload_key))
 
-    unordered = Ecto.Query.from(s in source, where: s.id in ^keys_to_reload) |> repo.all()
+    unordered = Ecto.Query.from(s in source, where: field(s, ^reload_key) in ^keys_to_reload) |> repo.all()
     indexed = unordered |> Enum.group_by(&Map.get(&1, reload_key))
 
     ordered =
@@ -973,7 +973,8 @@ defmodule AshMysql.DataLayer do
     #  name
     # end)
 
-    names = [:id]
+    names = Ash.Resource.Info.primary_key(resource)
+
     message = find_constraint_message(resource, names)
 
     {:error,
