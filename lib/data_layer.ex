@@ -699,8 +699,6 @@ defmodule AshMysql.DataLayer do
           opts
         end
 
-      ecto_changesets = Enum.map(changesets, & &1.attributes)
-
       opts =
         if schema = Enum.at(changesets, 0).context[:data_layer][:schema] do
           Keyword.put(opts, :prefix, schema)
@@ -708,8 +706,8 @@ defmodule AshMysql.DataLayer do
           opts
         end
 
+      ecto_changesets = Enum.map(changesets, & &1.attributes)
       resource_for_returning = if options.return_records?, do: resource, else: nil
-
       result = insert_all_returning(source, ecto_changesets, repo, resource_for_returning, opts)
 
       case result do
@@ -750,18 +748,26 @@ defmodule AshMysql.DataLayer do
   defp insert_all_returning(source, entries, repo, resource, opts) do
     {count, nil} = repo.insert_all(source, entries, opts)
     reload_key = Ash.Resource.Info.primary_key(resource) |> Enum.at(0)
-    keys_to_reload = entries |> Enum.map(&Map.get(&1, reload_key))
+    keys_to_reload = entries |> Enum.map(&Map.get(&1, reload_key)) |> Enum.filter(&(!is_nil(&1)))
 
-    unordered =
-      Ecto.Query.from(s in source, where: field(s, ^reload_key) in ^keys_to_reload) |> repo.all()
+    result =
+      case keys_to_reload do
+        [] ->
+          Ecto.Query.from(s in source, where: field(s, ^reload_key) == fragment("LAST_INSERT_ID()"))
+          |> repo.all()
 
-    indexed = unordered |> Enum.group_by(&Map.get(&1, reload_key))
+        _ ->
+          unordered =
+            Ecto.Query.from(s in source, where: field(s, ^reload_key) in ^keys_to_reload)
+            |> repo.all()
 
-    ordered =
-      keys_to_reload
-      |> Enum.map(&(Map.get(indexed, &1) |> Enum.at(0)))
+          indexed = unordered |> Enum.group_by(&Map.get(&1, reload_key))
 
-    {count, ordered}
+          keys_to_reload
+          |> Enum.map(&(Map.get(indexed, &1) |> Enum.at(0)))
+      end
+
+    {count, result}
   end
 
   defp upsert_set(resource, changesets, options) do
