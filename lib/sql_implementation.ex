@@ -119,7 +119,7 @@ defmodule AshMysql.SqlImplementation do
         Ecto.Query.dynamic(type(^expr, ^type))
 
       Ash.Type.storage_type(type, []) == :ci_string ->
-        Ecto.Query.dynamic(fragment("(? COLLATE NOCASE)", ^expr))
+        Ecto.Query.dynamic(fragment("(? COLLATE utf8mb4_0900_ai_ci)", ^expr))
 
       true ->
         Ecto.Query.dynamic(type(^expr, ^Ash.Type.storage_type(type, [])))
@@ -130,7 +130,7 @@ defmodule AshMysql.SqlImplementation do
     case type do
       {:parameterized, inner_type, constraints} ->
         if inner_type.type(constraints) == :ci_string do
-          Ecto.Query.dynamic(fragment("(? COLLATE NOCASE)", ^expr))
+          Ecto.Query.dynamic(fragment("(? COLLATE utf8mb4_0900_ai_ci)", ^expr))
         else
           Ecto.Query.dynamic(type(^expr, ^type))
         end
