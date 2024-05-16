@@ -1,0 +1,37 @@
+{
+  "attributes": [
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "id",
+      "references": null,
+      "allow_nil?": false,
+      "generated?": false,
+      "primary_key?": true
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "text",
+      "source": "name",
+      "references": null,
+      "allow_nil?": true,
+      "generated?": false,
+      "primary_key?": false
+    }
+  ],
+  "table": "orgs",
+  "hash": "106CE7B860A710A1275B05F81F2272B74678DC467F87E4179F9BEA8BC979613C",
+  "repo": "Elixir.AshSqlite.TestRepo",
+  "identities": [],
+  "base_filter": null,
+  "multitenancy": {
+    "global": null,
+    "strategy": null,
+    "attribute": null
+  },
+  "custom_indexes": [],
+  "custom_statements": [],
+  "has_create_action": true
+}

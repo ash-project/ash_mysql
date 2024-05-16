@@ -1,0 +1,47 @@
+{
+  "attributes": [
+    {
+      "default": "nil",
+      "size": null,
+      "type": "utc_datetime_usec",
+      "source": "time",
+      "references": null,
+      "allow_nil?": false,
+      "generated?": false,
+      "primary_key?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "text",
+      "source": "browser",
+      "references": null,
+      "allow_nil?": true,
+      "generated?": false,
+      "primary_key?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "post_id",
+      "references": null,
+      "allow_nil?": false,
+      "generated?": false,
+      "primary_key?": false
+    }
+  ],
+  "table": "post_views",
+  "hash": "D0749D9F514E36781D95F2967C97860C58C6DEAE95543DFAAB0E9C09A1480E93",
+  "repo": "Elixir.AshSqlite.TestRepo",
+  "identities": [],
+  "base_filter": null,
+  "multitenancy": {
+    "global": null,
+    "strategy": null,
+    "attribute": null
+  },
+  "custom_indexes": [],
+  "custom_statements": [],
+  "has_create_action": true
+}

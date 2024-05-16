@@ -1,0 +1,62 @@
+{
+  "attributes": [
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "id",
+      "references": null,
+      "allow_nil?": false,
+      "generated?": false,
+      "primary_key?": true
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "text",
+      "source": "description",
+      "references": null,
+      "allow_nil?": true,
+      "generated?": false,
+      "primary_key?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "author_id",
+      "references": {
+        "name": "profile_author_id_fkey",
+        "table": "authors",
+        "on_delete": null,
+        "multitenancy": {
+          "global": null,
+          "strategy": null,
+          "attribute": null
+        },
+        "primary_key?": true,
+        "destination_attribute": "id",
+        "on_update": null,
+        "deferrable": false,
+        "destination_attribute_default": null,
+        "destination_attribute_generated": null
+      },
+      "allow_nil?": true,
+      "generated?": false,
+      "primary_key?": false
+    }
+  ],
+  "table": "profile",
+  "hash": "710F812AC63D2051F6AB22912CE5304088AF1D8F03C2BAFDC07EB24FA62136C2",
+  "repo": "Elixir.AshSqlite.TestRepo",
+  "identities": [],
+  "base_filter": null,
+  "multitenancy": {
+    "global": null,
+    "strategy": null,
+    "attribute": null
+  },
+  "custom_indexes": [],
+  "custom_statements": [],
+  "has_create_action": true
+}

@@ -1,0 +1,62 @@
+{
+  "attributes": [
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "id",
+      "references": null,
+      "allow_nil?": false,
+      "generated?": false,
+      "primary_key?": true
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "bigint",
+      "source": "score",
+      "references": null,
+      "allow_nil?": true,
+      "generated?": false,
+      "primary_key?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "uuid",
+      "source": "resource_id",
+      "references": {
+        "name": "comment_ratings_resource_id_fkey",
+        "table": "comments",
+        "on_delete": null,
+        "multitenancy": {
+          "global": null,
+          "strategy": null,
+          "attribute": null
+        },
+        "primary_key?": true,
+        "destination_attribute": "id",
+        "on_update": null,
+        "deferrable": false,
+        "destination_attribute_default": "nil",
+        "destination_attribute_generated": false
+      },
+      "allow_nil?": true,
+      "generated?": false,
+      "primary_key?": false
+    }
+  ],
+  "table": "comment_ratings",
+  "hash": "88FFC6DC62CEA37397A9C16C51E43F6FF6EED6C34E4C529FFB4D20EF1BCFF98F",
+  "repo": "Elixir.AshSqlite.TestRepo",
+  "identities": [],
+  "base_filter": null,
+  "multitenancy": {
+    "global": null,
+    "strategy": null,
+    "attribute": null
+  },
+  "custom_indexes": [],
+  "custom_statements": [],
+  "has_create_action": true
+}
