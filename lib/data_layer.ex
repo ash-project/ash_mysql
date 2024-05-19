@@ -747,21 +747,41 @@ defmodule AshMysql.DataLayer do
 
   defp insert_all_returning(source, entries, repo, resource, opts) do
     {count, nil} = repo.insert_all(source, entries, opts)
-    reload_key = Ash.Resource.Info.primary_key(resource) |> Enum.at(0)
-    keys_to_reload = entries |> Enum.map(&Map.get(&1, reload_key)) |> Enum.filter(&(!is_nil(&1)))
+
+    # Can't work if pkey is composed since Ecto doesn't know to build `where {k1, k2} in ^array` requests
+    pkey = Ash.Resource.Info.primary_key(resource) |> Enum.at(0)
+    keys_to_reload = entries |> Enum.map(&Map.get(&1, pkey)) |> Enum.filter(&(!is_nil(&1)))
 
     result =
-      case keys_to_reload do
-        [] ->
-          Ecto.Query.from(s in source, where: field(s, ^reload_key) == fragment("LAST_INSERT_ID()"))
+      case {count, pkey, keys_to_reload} do
+        {0, _, _} ->
+          nil
+
+        {1, nil, _} ->
+          # no pkey, one record, let's hope we have all fields... try our best and pray...
+          # Is there a good way to manage that case ?
+          params = entries |> Enum.at(0) |> Map.to_list()
+
+          Ecto.Query.from(s in source, where: ^params)
           |> repo.all()
 
-        _ ->
+        {1, _, []} ->
+          # one record with pkey, we can probably count on LAST_INSERT_ID()
+          Ecto.Query.from(s in source, where: field(s, ^pkey) == fragment("LAST_INSERT_ID()"))
+          |> repo.all()
+
+        {_, nil, _} ->
+          # Can't work without a pkey even if we have enough fields to reload
+          # since Ecto doesn't know to build `where {k1, k2} in ^array`
+          # requests
+          nil
+
+        {_, _, _} ->
           unordered =
-            Ecto.Query.from(s in source, where: field(s, ^reload_key) in ^keys_to_reload)
+            Ecto.Query.from(s in source, where: field(s, ^pkey) in ^keys_to_reload)
             |> repo.all()
 
-          indexed = unordered |> Enum.group_by(&Map.get(&1, reload_key))
+          indexed = unordered |> Enum.group_by(&Map.get(&1, pkey))
 
           keys_to_reload
           |> Enum.map(&(Map.get(indexed, &1) |> Enum.at(0)))
