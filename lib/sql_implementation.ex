@@ -349,9 +349,13 @@ defmodule AshMysql.SqlImplementation do
          bindings,
          embedded?,
          acc,
-         type \\ nil
+         _type \\ nil
        ) do
-    path = "$." <> Enum.join(right, ".")
+    field = Ash.Query.Ref.name(left)
+    path = Enum.map(right, &to_string/1)
+
+    expr =
+      Ecto.Query.dynamic([row], json_extract_path(field(row, ^field), ^path))
 
     {expr, acc} =
       AshSql.Expr.dynamic_expr(
@@ -359,34 +363,18 @@ defmodule AshMysql.SqlImplementation do
         %Ash.Query.Function.Fragment{
           embedded?: pred_embedded?,
           arguments: [
-            raw: "json_extract(",
-            expr: left,
-            raw: ", ",
-            expr: path,
+            raw: "json_unquote(",
+            expr: expr,
             raw: ")"
           ]
         },
         bindings,
         embedded?,
-        type,
+        Ash.Type.String,
         acc
       )
 
-    if type do
-      {expr, acc} =
-        AshSql.Expr.dynamic_expr(
-          query,
-          %Ash.Query.Function.Type{arguments: [expr, type, []]},
-          bindings,
-          embedded?,
-          type,
-          acc
-        )
-
-      {:ok, expr, acc}
-    else
-      {:ok, expr, acc}
-    end
+    {:ok, expr, acc}
   end
 
   defp determine_type_at_path(type, path) do
