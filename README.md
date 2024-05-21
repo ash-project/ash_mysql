@@ -8,7 +8,8 @@
 
 # AshMysql
 
-Welcome! `AshMysql` is the MySQL data layer for [Ash Framework](https://hexdocs.pm/ash).
+Welcome! `AshMysql` is a MySQL data layer for [Ash Framework](https://hexdocs.pm/ash)
+that is derived from [`AshSqlite`](https://hex.pm/packages/ash_sqlite)
 
 ## Tutorials
 
