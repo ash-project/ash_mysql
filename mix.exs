@@ -5,7 +5,7 @@ defmodule AshMysql.MixProject do
   The MySQL data layer for Ash Framework.
   """
 
-  @version "0.1.0"
+  @version "0.1.0-dev"
 
   def project do
     [
@@ -122,9 +122,11 @@ defmodule AshMysql.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto_sql, "~> 3.9"},
+      # {:ecto_sql, "~> 3.9"},
+      {:ecto_sql, github: "elixir-ecto/ecto_sql", override: true},
       {:myxql, ">= 0.0.0"},
-      {:ecto, "~> 3.9"},
+      # {:ecto, "~> 3.9"},
+      {:ecto, github: "elixir-ecto/ecto", override: true},
       {:jason, "~> 1.0"},
       {:ash, ash_version("~> 3.0")},
       {:ash_sql, ash_sql_version("~> 0.1")},
