@@ -129,7 +129,7 @@ defmodule AshMysql.MixProject do
       {:ecto, github: "elixir-ecto/ecto", override: true},
       {:jason, "~> 1.0"},
       {:ash, ash_version("~> 3.0")},
-      {:ash_sql, github: "lejoko/ash_sql", branch: "dispatch_dynamic_expr"},
+      {:ash_sql, github: "ash-project/ash_sql"},
       # {:ash_sql, ash_sql_version("~> 0.1")},
       {:git_ops, "~> 2.5", only: [:dev, :test]},
       {:ex_doc, "~> 0.22", only: [:dev, :test], runtime: false},
