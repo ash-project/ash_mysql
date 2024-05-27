@@ -1289,7 +1289,8 @@ defmodule AshMysql.DataLayer do
   #     base_filter_sql =
   #       AshMysql.DataLayer.Info.base_filter_sql(resource) ||
   #         raise """
-  #         Cannot use upserts with resources that have a base_filter without also adding `base_filter_sql` in the mysql section.
+  #         Cannot use upserts with resources that have a base_filter without also adding `base_filter_sql` in the mysql
+  #         section.
   #         """
 
   #     sources =

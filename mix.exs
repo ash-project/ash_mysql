@@ -130,7 +130,7 @@ defmodule AshMysql.MixProject do
       {:jason, "~> 1.0"},
       {:ash, ash_version("~> 3.0")},
       {:ash_sql, github: "lejoko/ash_sql", branch: "dispatch_dynamic_expr"},
-      #{:ash_sql, ash_sql_version("~> 0.1")},
+      # {:ash_sql, ash_sql_version("~> 0.1")},
       {:git_ops, "~> 2.5", only: [:dev, :test]},
       {:ex_doc, "~> 0.22", only: [:dev, :test], runtime: false},
       {:ex_check, "~> 0.14", only: [:dev, :test]},
