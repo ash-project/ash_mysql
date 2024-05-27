@@ -4,6 +4,8 @@ defmodule AshMysql.AtomicsTest do
 
   import Ash.Expr
 
+  # no upserts for now. hopefully later
+  @tag :skip
   test "atomics work on upserts" do
     id = Ash.UUID.generate()
 

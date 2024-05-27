@@ -388,8 +388,8 @@ defmodule AshMysql.DataLayer do
   def can?(_, :transact), do: false
   def can?(_, :composite_primary_key), do: true
   def can?(_, {:atomic, :update}), do: true
-  def can?(_, {:atomic, :upsert}), do: true
-  def can?(_, :upsert), do: true
+  def can?(_, {:atomic, :upsert}), do: false
+  def can?(_, :upsert), do: false
   def can?(_, :changeset_filter), do: true
 
   def can?(resource, {:join, other_resource}) do
@@ -651,53 +651,52 @@ defmodule AshMysql.DataLayer do
     source = resolve_source(resource, Enum.at(changesets, 0))
 
     try do
-      opts =
-        if options[:upsert?] do
-          raise "MySQL datalayer doesn't (yet?) know to upsert in bulk_create"
-          ## Ash groups changesets by atomics before dispatching them to the data layer
-          ## this means that all changesets have the same atomics
-          # %{atomics: atomics, filter: filter} = Enum.at(changesets, 0)
+      # opts =
+      #   if options[:upsert?] do
+      #     # Ash groups changesets by atomics before dispatching them to the data layer
+      #     # this means that all changesets have the same atomics
+      #     %{atomics: atomics, filter: filter} = Enum.at(changesets, 0)
 
-          # query = from(row in resource, as: ^0)
+      #     query = from(row in resource, as: ^0)
 
-          # query =
-          #  query
-          #  |> AshSql.Bindings.default_bindings(resource, AshMysql.SqlImplementation)
+      #     query =
+      #       query
+      #       |> AshSql.Bindings.default_bindings(resource, AshMysql.SqlImplementation)
 
-          # upsert_set =
-          #  upsert_set(resource, changesets, options)
+      #     upsert_set =
+      #       upsert_set(resource, changesets, options)
 
-          # on_conflict =
-          #  case AshSql.Atomics.query_with_atomics(
-          #         resource,
-          #         query,
-          #         filter,
-          #         atomics,
-          #         %{},
-          #         upsert_set
-          #       ) do
-          #    :empty ->
-          #      :nothing
+      #     on_conflict =
+      #       case AshSql.Atomics.query_with_atomics(
+      #              resource,
+      #              query,
+      #              filter,
+      #              atomics,
+      #              %{},
+      #              upsert_set
+      #            ) do
+      #         :empty ->
+      #           :nothing
 
-          #    {:ok, query} ->
-          #      query
+      #         {:ok, query} ->
+      #           query
 
-          #    {:error, error} ->
-          #      raise Ash.Error.to_ash_error(error)
-          #  end
+      #         {:error, error} ->
+      #           raise Ash.Error.to_ash_error(error)
+      #       end
 
-          # opts
-          # |> Keyword.put(:on_conflict, on_conflict)
-          # |> Keyword.put(
-          #  :conflict_target,
-          #  conflict_target(
-          #    resource,
-          #    options[:upsert_keys] || Ash.Resource.Info.primary_key(resource)
-          #  )
-          # )
-        else
-          opts
-        end
+      #     opts
+      #     |> Keyword.put(:on_conflict, on_conflict)
+      #     |> Keyword.put(
+      #       :conflict_target,
+      #       conflict_target(
+      #         resource,
+      #         options[:upsert_keys] || Ash.Resource.Info.primary_key(resource)
+      #       )
+      #     )
+      #   else
+      #     opts
+      #   end
 
       opts =
         if schema = Enum.at(changesets, 0).context[:data_layer][:schema] do
@@ -790,54 +789,54 @@ defmodule AshMysql.DataLayer do
     {count, result}
   end
 
-  defp upsert_set(resource, changesets, options) do
-    attributes_changing_anywhere =
-      changesets |> Enum.flat_map(&Map.keys(&1.attributes)) |> Enum.uniq()
+  # defp upsert_set(resource, changesets, options) do
+  #   attributes_changing_anywhere =
+  #     changesets |> Enum.flat_map(&Map.keys(&1.attributes)) |> Enum.uniq()
 
-    update_defaults = update_defaults(resource)
-    # We can't reference EXCLUDED if at least one of the changesets in the stream is not
-    # changing the value (and we wouldn't want to even if we could as it would be unnecessary)
+  #   update_defaults = update_defaults(resource)
+  #   # We can't reference EXCLUDED if at least one of the changesets in the stream is not
+  #   # changing the value (and we wouldn't want to even if we could as it would be unnecessary)
 
-    upsert_fields =
-      (options[:upsert_fields] || []) |> Enum.filter(&(&1 in attributes_changing_anywhere))
+  #   upsert_fields =
+  #     (options[:upsert_fields] || []) |> Enum.filter(&(&1 in attributes_changing_anywhere))
 
-    fields_to_upsert =
-      (upsert_fields ++ Keyword.keys(update_defaults)) --
-        Keyword.keys(Enum.at(changesets, 0).atomics)
+  #   fields_to_upsert =
+  #     (upsert_fields ++ Keyword.keys(update_defaults)) --
+  #       Keyword.keys(Enum.at(changesets, 0).atomics)
 
-    Enum.map(fields_to_upsert, fn upsert_field ->
-      # for safety, we check once more at the end that all values in
-      # upsert_fields are names of attributes. This is because
-      # below we use `literal/1` to bring them into the query
-      if is_nil(resource.__schema__(:type, upsert_field)) do
-        raise "Only attribute names can be used in upsert_fields"
-      end
+  #   Enum.map(fields_to_upsert, fn upsert_field ->
+  #     # for safety, we check once more at the end that all values in
+  #     # upsert_fields are names of attributes. This is because
+  #     # below we use `literal/1` to bring them into the query
+  #     if is_nil(resource.__schema__(:type, upsert_field)) do
+  #       raise "Only attribute names can be used in upsert_fields"
+  #     end
 
-      case Keyword.fetch(update_defaults, upsert_field) do
-        {:ok, default} ->
-          if upsert_field in upsert_fields do
-            {upsert_field,
-             Ecto.Query.dynamic(
-               [],
-               fragment(
-                 "COALESCE(?, ?)",
-                 literal(^to_string(upsert_field)),
-                 ^default
-               )
-             )}
-          else
-            {upsert_field, default}
-          end
+  #     case Keyword.fetch(update_defaults, upsert_field) do
+  #       {:ok, default} ->
+  #         if upsert_field in upsert_fields do
+  #           {upsert_field,
+  #            Ecto.Query.dynamic(
+  #              [],
+  #              fragment(
+  #                "COALESCE(?, ?)",
+  #                literal(^to_string(upsert_field)),
+  #                ^default
+  #              )
+  #            )}
+  #         else
+  #           {upsert_field, default}
+  #         end
 
-        :error ->
-          {upsert_field,
-           Ecto.Query.dynamic(
-             [],
-             fragment("?", literal(^to_string(upsert_field)))
-           )}
-      end
-    end)
-  end
+  #       :error ->
+  #         {upsert_field,
+  #          Ecto.Query.dynamic(
+  #            [],
+  #            fragment("?", literal(^to_string(upsert_field)))
+  #          )}
+  #     end
+  #   end)
+  # end
 
   @impl true
   def create(resource, changeset) do
@@ -1271,109 +1270,109 @@ defmodule AshMysql.DataLayer do
     end)
   end
 
-  @impl true
-  def upsert(resource, changeset, keys \\ nil) do
-    keys = keys || Ash.Resource.Info.primary_key(keys)
+  # @impl true
+  # def upsert(resource, changeset, keys \\ nil) do
+  #   keys = keys || Ash.Resource.Info.primary_key(keys)
 
-    explicitly_changing_attributes =
-      Map.keys(changeset.attributes) -- Map.get(changeset, :defaults, []) -- keys
+  #   explicitly_changing_attributes =
+  #     Map.keys(changeset.attributes) -- Map.get(changeset, :defaults, []) -- keys
 
-    upsert_fields =
-      changeset.context[:private][:upsert_fields] || explicitly_changing_attributes
+  #   upsert_fields =
+  #     changeset.context[:private][:upsert_fields] || explicitly_changing_attributes
 
-    case bulk_create(resource, [changeset], %{
-           single?: true,
-           upsert?: true,
-           tenant: changeset.tenant,
-           upsert_keys: keys,
-           upsert_fields: upsert_fields,
-           return_records?: true
-         }) do
-      {:ok, [result]} ->
-        {:ok, result}
+  #   case bulk_create(resource, [changeset], %{
+  #          single?: true,
+  #          upsert?: true,
+  #          tenant: changeset.tenant,
+  #          upsert_keys: keys,
+  #          upsert_fields: upsert_fields,
+  #          return_records?: true
+  #        }) do
+  #     {:ok, [result]} ->
+  #       {:ok, result}
 
-      {:error, error} ->
-        {:error, error}
-    end
-  end
+  #     {:error, error} ->
+  #       {:error, error}
+  #   end
+  # end
 
-  defp conflict_target(resource, keys) do
-    if Ash.Resource.Info.base_filter(resource) do
-      base_filter_sql =
-        AshMysql.DataLayer.Info.base_filter_sql(resource) ||
-          raise """
-          Cannot use upserts with resources that have a base_filter without also adding `base_filter_sql` in the mysql section.
-          """
+  # defp conflict_target(resource, keys) do
+  #   if Ash.Resource.Info.base_filter(resource) do
+  #     base_filter_sql =
+  #       AshMysql.DataLayer.Info.base_filter_sql(resource) ||
+  #         raise """
+  #         Cannot use upserts with resources that have a base_filter without also adding `base_filter_sql` in the mysql section.
+  #         """
 
-      sources =
-        Enum.map(keys, fn key ->
-          ~s("#{Ash.Resource.Info.attribute(resource, key).source || key}")
-        end)
+  #     sources =
+  #       Enum.map(keys, fn key ->
+  #         ~s("#{Ash.Resource.Info.attribute(resource, key).source || key}")
+  #       end)
 
-      {:unsafe_fragment, "(" <> Enum.join(sources, ", ") <> ") WHERE (#{base_filter_sql})"}
-    else
-      keys
-    end
-  end
+  #     {:unsafe_fragment, "(" <> Enum.join(sources, ", ") <> ") WHERE (#{base_filter_sql})"}
+  #   else
+  #     keys
+  #   end
+  # end
 
-  defp update_defaults(resource) do
-    attributes =
-      resource
-      |> Ash.Resource.Info.attributes()
-      |> Enum.reject(&is_nil(&1.update_default))
+  # defp update_defaults(resource) do
+  #   attributes =
+  #     resource
+  #     |> Ash.Resource.Info.attributes()
+  #     |> Enum.reject(&is_nil(&1.update_default))
 
-    attributes
-    |> static_defaults()
-    |> Enum.concat(lazy_matching_defaults(attributes))
-    |> Enum.concat(lazy_non_matching_defaults(attributes))
-  end
+  #   attributes
+  #   |> static_defaults()
+  #   |> Enum.concat(lazy_matching_defaults(attributes))
+  #   |> Enum.concat(lazy_non_matching_defaults(attributes))
+  # end
 
-  defp static_defaults(attributes) do
-    attributes
-    |> Enum.reject(&get_default_fun(&1))
-    |> Enum.map(&{&1.name, &1.update_default})
-  end
+  # defp static_defaults(attributes) do
+  #   attributes
+  #   |> Enum.reject(&get_default_fun(&1))
+  #   |> Enum.map(&{&1.name, &1.update_default})
+  # end
 
-  defp lazy_non_matching_defaults(attributes) do
-    attributes
-    |> Enum.filter(&(!&1.match_other_defaults? && get_default_fun(&1)))
-    |> Enum.map(fn attribute ->
-      default_value =
-        case attribute.update_default do
-          function when is_function(function) ->
-            function.()
+  # defp lazy_non_matching_defaults(attributes) do
+  #   attributes
+  #   |> Enum.filter(&(!&1.match_other_defaults? && get_default_fun(&1)))
+  #   |> Enum.map(fn attribute ->
+  #     default_value =
+  #       case attribute.update_default do
+  #         function when is_function(function) ->
+  #           function.()
 
-          {m, f, a} when is_atom(m) and is_atom(f) and is_list(a) ->
-            apply(m, f, a)
-        end
+  #         {m, f, a} when is_atom(m) and is_atom(f) and is_list(a) ->
+  #           apply(m, f, a)
+  #       end
 
-      {attribute.name, default_value}
-    end)
-  end
+  #     {attribute.name, default_value}
+  #   end)
+  # end
 
-  defp lazy_matching_defaults(attributes) do
-    attributes
-    |> Enum.filter(&(&1.match_other_defaults? && get_default_fun(&1)))
-    |> Enum.group_by(& &1.update_default)
-    |> Enum.flat_map(fn {default_fun, attributes} ->
-      default_value =
-        case default_fun do
-          function when is_function(function) ->
-            function.()
+  # defp lazy_matching_defaults(attributes) do
+  #   attributes
+  #   |> Enum.filter(&(&1.match_other_defaults? && get_default_fun(&1)))
+  #   |> Enum.group_by(& &1.update_default)
+  #   |> Enum.flat_map(fn {default_fun, attributes} ->
+  #     default_value =
+  #       case default_fun do
+  #         function when is_function(function) ->
+  #           function.()
 
-          {m, f, a} when is_atom(m) and is_atom(f) and is_list(a) ->
-            apply(m, f, a)
-        end
+  #         {m, f, a} when is_atom(m) and is_atom(f) and is_list(a) ->
+  #           apply(m, f, a)
+  #       end
 
-      Enum.map(attributes, &{&1.name, default_value})
-    end)
-  end
+  #     Enum.map(attributes, &{&1.name, default_value})
+  #   end)
+  # end
 
-  defp get_default_fun(attribute) do
-    if is_function(attribute.update_default) or match?({_, _, _}, attribute.update_default) do
-      attribute.update_default
-    end
-  end
+  # defp get_default_fun(attribute) do
+  #   if is_function(attribute.update_default) or match?({_, _, _}, attribute.update_default) do
+  #     attribute.update_default
+  #   end
+  # end
 
   @impl true
   def update(resource, changeset) do

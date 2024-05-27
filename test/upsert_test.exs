@@ -4,6 +4,8 @@ defmodule AshMysql.Test.UpsertTest do
 
   require Ash.Query
 
+  # no upserts for now. hopefully later
+  @tag :skip
   test "upserting results in the same created_at timestamp, but a new updated_at timestamp" do
     id = Ash.UUID.generate()
 
@@ -31,6 +33,8 @@ defmodule AshMysql.Test.UpsertTest do
     assert updated_post.created_at != updated_post.updated_at
   end
 
+  # no upserts for now. hopefully later
+  @tag :skip
   test "upserting a field with a default sets to the new value" do
     id = Ash.UUID.generate()
 
