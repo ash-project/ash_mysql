@@ -955,10 +955,7 @@ defmodule AshMysql.DataLayer do
 
   defp handle_raised_error(
          %MyXQL.Error{
-           mysql: %{
-             code: 1452,
-             name: :ER_NO_REFERENCED_ROW_2
-           }
+           mysql: %{code: 1452, name: :ER_NO_REFERENCED_ROW_2}
          },
          stacktrace,
          context,
@@ -977,38 +974,30 @@ defmodule AshMysql.DataLayer do
 
   defp handle_raised_error(
          %MyXQL.Error{
+           message: message,
            mysql: %{code: 1062, name: :ER_DUP_ENTRY}
          },
          _stacktrace,
          _context,
          resource
        ) do
-    fields = ""
+    index_name =
+      Regex.run(~r/ for key '(.*)'/, message, capture: :all_but_first)
+      |> Enum.at(0)
+      |> String.split(".")
+      |> Enum.at(1)
+      |> String.to_atom()
 
-    names =
-      fields
-      |> String.split(", ")
-      |> Enum.map(fn field ->
-        field |> String.split(".", trim: true) |> Enum.drop(1) |> Enum.at(0)
-      end)
-      |> Enum.map(fn field ->
-        Ash.Resource.Info.attribute(resource, field)
-      end)
-      |> Enum.reject(&is_nil/1)
+    %{fields: fields, message: message} =
+      find_constraint_data(resource, index_name)
 
-    # |> Enum.map(fn %{name: name} ->
-    #  name
-    # end)
-
-    names = Ash.Resource.Info.primary_key(resource)
-
-    message = find_constraint_message(resource, names)
+    message = message || "has already been taken"
 
     {:error,
-     names
-     |> Enum.map(fn name ->
+     fields
+     |> Enum.map(fn field ->
        Ash.Error.Changes.InvalidAttribute.exception(
-         field: name,
+         field: field,
          message: message
        )
      end)}
@@ -1018,38 +1007,37 @@ defmodule AshMysql.DataLayer do
     {:error, Ash.Error.to_ash_error(error, stacktrace)}
   end
 
-  defp find_constraint_message(resource, names) do
-    find_custom_index_message(resource, names) || find_identity_message(resource, names) ||
-      "has already been taken"
+  defp find_constraint_data(resource, :PRIMARY) do
+    %{
+      fields: Ash.Resource.Info.primary_key(resource),
+      message: nil
+    }
   end
 
-  defp find_custom_index_message(resource, names) do
+  defp find_constraint_data(resource, index_name) do
+    find_custom_index(resource, index_name) || find_identity(resource, index_name)
+  end
+
+  defp find_custom_index(resource, searched_name) do
+    table = AshMysql.DataLayer.Info.table(resource)
+
     resource
     |> AshMysql.DataLayer.Info.custom_indexes()
-    |> Enum.find(fn %{fields: fields} ->
-      fields |> Enum.map(&to_string/1) |> Enum.sort() ==
-        names |> Enum.map(&to_string/1) |> Enum.sort()
+    |> Enum.find(fn custom_index ->
+      name = AshMysql.CustomIndex.name(table, custom_index)
+      name == searched_name
     end)
-    |> case do
-      %{message: message} when is_binary(message) -> message
-      _ -> nil
-    end
   end
 
-  defp find_identity_message(resource, names) do
+  defp find_identity(resource, searched_name) do
+    table = AshMysql.DataLayer.Info.table(resource)
+
     resource
     |> Ash.Resource.Info.identities()
-    |> Enum.find(fn %{keys: fields} ->
-      fields |> Enum.map(&to_string/1) |> Enum.sort() ==
-        names |> Enum.map(&to_string/1) |> Enum.sort()
+    |> Enum.find(fn identity ->
+      name = AshMysql.CustomIndex.name(table, identity)
+      name == searched_name
     end)
-    |> case do
-      %{message: message} when is_binary(message) ->
-        message
-
-      _ ->
-        nil
-    end
   end
 
   defp set_table(record, changeset, operation, table_error?) do

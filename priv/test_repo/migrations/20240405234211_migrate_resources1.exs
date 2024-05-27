@@ -149,7 +149,10 @@ defmodule AshMysql.TestRepo.Migrations.MigrateResources1 do
       add :id, :uuid, null: false, primary_key: true
     end
 
-    create index(:posts, ["uniq_custom_one(384)", "uniq_custom_two(384)"], unique: true)
+    create index(:posts, ["uniq_custom_one(384)", "uniq_custom_two(384)"],
+             name: "posts_uniq_custom_one_uniq_custom_two_index",
+             unique: true
+           )
 
     create unique_index(:posts, ["uniq_one(384)", "uniq_two(384)"],
     #         where: "type = 'sponsored'",
