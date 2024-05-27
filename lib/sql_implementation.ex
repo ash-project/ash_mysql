@@ -96,6 +96,139 @@ defmodule AshMysql.SqlImplementation do
     do_get_path(query, get_path, bindings, embedded?, acc, type)
   end
 
+  # Honestly we need to either 1. not type cast or 2. build in type compatibility concepts
+  # instead of `:same` we need an `ANY COMPATIBLE` equivalent.
+  @cast_operands_for [:<>]
+
+  def expr(
+        query,
+        %mod{
+          __predicate__?: _,
+          left: left,
+          right: right,
+          embedded?: pred_embedded?,
+          operator: operator
+        },
+        bindings,
+        embedded?,
+        acc,
+        type
+      )
+      when operator in [:<>, :||, :&&] do
+    [left_type, right_type] = mod |> determine_types([left, right])
+
+    {left_expr, acc} =
+      if left_type && operator in @cast_operands_for do
+        {left_expr, acc} =
+          AshSql.Expr.dynamic_expr(query, left, bindings, pred_embedded? || embedded?, nil, acc)
+
+        {type_expr(left_expr, left_type), acc}
+      else
+        AshSql.Expr.dynamic_expr(
+          query,
+          left,
+          bindings,
+          pred_embedded? || embedded?,
+          left_type,
+          acc
+        )
+      end
+
+    {right_expr, acc} =
+      if right_type && operator in @cast_operands_for do
+        {right_expr, acc} =
+          AshSql.Expr.dynamic_expr(query, right, bindings, pred_embedded? || embedded?, nil, acc)
+
+        {type_expr(right_expr, right_type), acc}
+      else
+        AshSql.Expr.dynamic_expr(
+          query,
+          right,
+          bindings,
+          pred_embedded? || embedded?,
+          right_type,
+          acc
+        )
+      end
+
+    case operator do
+      :<> ->
+        AshSql.Expr.dynamic_expr(
+          query,
+          %Ash.Query.Function.Fragment{
+            embedded?: pred_embedded?,
+            arguments: [
+              raw: "CONCAT( ",
+              casted_expr: left_expr,
+              raw: ", ",
+              casted_expr: right_expr,
+              raw: ")"
+            ]
+          },
+          bindings,
+          embedded?,
+          type,
+          acc
+        )
+
+      :|| ->
+        AshSql.Expr.dynamic_expr(
+          query,
+          %Ash.Query.Function.Fragment{
+            embedded?: pred_embedded?,
+            arguments: [
+              raw: "CASE WHEN (",
+              casted_expr: left_expr,
+              raw: " LIKE FALSE OR ",
+              casted_expr: left_expr,
+              raw: " IS NULL) THEN ",
+              casted_expr: right_expr,
+              raw: " ELSE ",
+              casted_expr: left_expr,
+              raw: "END"
+            ]
+          },
+          bindings,
+          embedded?,
+          type,
+          acc
+        )
+
+      :&& ->
+        AshSql.Expr.dynamic_expr(
+          query,
+          %Ash.Query.Function.Fragment{
+            embedded?: pred_embedded?,
+            arguments: [
+              raw: "CASE WHEN (",
+              casted_expr: left_expr,
+              raw: " LIKE FALSE OR ",
+              casted_expr: left_expr,
+              raw: " IS NULL) THEN ",
+              casted_expr: left_expr,
+              raw: " ELSE ",
+              casted_expr: right_expr,
+              raw: "END"
+            ]
+          },
+          bindings,
+          embedded?,
+          type,
+          acc
+        )
+
+      _ ->
+        :error
+    end
+    |> case do
+      {expr, acc} ->
+        {:ok, expr, acc}
+
+      :error ->
+        :error
+    end
+  end
+
   @impl true
   def expr(
         _query,
