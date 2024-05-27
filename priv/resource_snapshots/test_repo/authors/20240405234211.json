@@ -39,19 +39,6 @@
       "allow_nil?": true,
       "generated?": false,
       "primary_key?": false
-    },
-    {
-      "default": "nil",
-      "size": null,
-      "type": [
-        "array",
-        "text"
-      ],
-      "source": "badges",
-      "references": null,
-      "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
     }
   ],
   "table": "authors",

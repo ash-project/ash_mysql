@@ -93,7 +93,7 @@
     {
       "default": "nil",
       "size": null,
-      "type": "status",
+      "type": "text",
       "source": "status_enum",
       "references": null,
       "allow_nil?": true,

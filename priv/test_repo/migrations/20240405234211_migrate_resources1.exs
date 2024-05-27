@@ -50,7 +50,7 @@ defmodule AshMysql.TestRepo.Migrations.MigrateResources1 do
       add :uniq_two, :text
       add :uniq_one, :text
       add :stuff, :map
-      add :status_enum, :"ENUM('open', 'closed')"
+      add :status_enum, :text
       add :status, :text
       add :decimal, :decimal
       add :price, :bigint
