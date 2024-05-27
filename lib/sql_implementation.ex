@@ -151,82 +151,75 @@ defmodule AshMysql.SqlImplementation do
         )
       end
 
-    case operator do
-      :<> ->
-        AshSql.Expr.dynamic_expr(
-          query,
-          %Ash.Query.Function.Fragment{
-            embedded?: pred_embedded?,
-            arguments: [
-              raw: "CONCAT( ",
-              casted_expr: left_expr,
-              raw: ", ",
-              casted_expr: right_expr,
-              raw: ")"
-            ]
-          },
-          bindings,
-          embedded?,
-          type,
-          acc
-        )
+    {expr, acc} =
+      case operator do
+        :<> ->
+          AshSql.Expr.dynamic_expr(
+            query,
+            %Ash.Query.Function.Fragment{
+              embedded?: pred_embedded?,
+              arguments: [
+                raw: "CONCAT( ",
+                casted_expr: left_expr,
+                raw: ", ",
+                casted_expr: right_expr,
+                raw: ")"
+              ]
+            },
+            bindings,
+            embedded?,
+            type,
+            acc
+          )
 
-      :|| ->
-        AshSql.Expr.dynamic_expr(
-          query,
-          %Ash.Query.Function.Fragment{
-            embedded?: pred_embedded?,
-            arguments: [
-              raw: "CASE WHEN (",
-              casted_expr: left_expr,
-              raw: " LIKE FALSE OR ",
-              casted_expr: left_expr,
-              raw: " IS NULL) THEN ",
-              casted_expr: right_expr,
-              raw: " ELSE ",
-              casted_expr: left_expr,
-              raw: "END"
-            ]
-          },
-          bindings,
-          embedded?,
-          type,
-          acc
-        )
+        :|| ->
+          AshSql.Expr.dynamic_expr(
+            query,
+            %Ash.Query.Function.Fragment{
+              embedded?: pred_embedded?,
+              arguments: [
+                raw: "CASE WHEN (",
+                casted_expr: left_expr,
+                raw: " LIKE FALSE OR ",
+                casted_expr: left_expr,
+                raw: " IS NULL) THEN ",
+                casted_expr: right_expr,
+                raw: " ELSE ",
+                casted_expr: left_expr,
+                raw: "END"
+              ]
+            },
+            bindings,
+            embedded?,
+            type,
+            acc
+          )
 
-      :&& ->
-        AshSql.Expr.dynamic_expr(
-          query,
-          %Ash.Query.Function.Fragment{
-            embedded?: pred_embedded?,
-            arguments: [
-              raw: "CASE WHEN (",
-              casted_expr: left_expr,
-              raw: " LIKE FALSE OR ",
-              casted_expr: left_expr,
-              raw: " IS NULL) THEN ",
-              casted_expr: left_expr,
-              raw: " ELSE ",
-              casted_expr: right_expr,
-              raw: "END"
-            ]
-          },
-          bindings,
-          embedded?,
-          type,
-          acc
-        )
+        :&& ->
+          AshSql.Expr.dynamic_expr(
+            query,
+            %Ash.Query.Function.Fragment{
+              embedded?: pred_embedded?,
+              arguments: [
+                raw: "CASE WHEN (",
+                casted_expr: left_expr,
+                raw: " LIKE FALSE OR ",
+                casted_expr: left_expr,
+                raw: " IS NULL) THEN ",
+                casted_expr: left_expr,
+                raw: " ELSE ",
+                casted_expr: right_expr,
+                raw: "END"
+              ]
+            },
+            bindings,
+            embedded?,
+            type,
+            acc
+          )
+      end
 
-      _ ->
-        :error
-    end
-    |> case do
-      {expr, acc} ->
-        {:ok, expr, acc}
-
-      :error ->
-        :error
-    end
+    {:ok, expr, acc}
   end
 
   @impl true
