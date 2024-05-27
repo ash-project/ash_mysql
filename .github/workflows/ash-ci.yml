@@ -263,7 +263,7 @@ jobs:
       - uses: team-alembic/staple-actions/actions/mix-task@main
         with:
           mix-env: test
-          task: ash_mysql.migrate --tenants
+          task: ash_mysql.migrate
         if: ${{inputs.mysql && inputs.ash_mysql}}
       - uses: team-alembic/staple-actions/actions/mix-task@main
         with:
