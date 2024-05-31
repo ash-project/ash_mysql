@@ -7,6 +7,10 @@ defmodule AshMysql.Types do
     type
   end
 
+  def parameterized_type({:parameterized, _} = type, _) do
+    type
+  end
+
   def parameterized_type({:in, type}, constraints) do
     parameterized_type({:array, type}, constraints)
   end
@@ -40,7 +44,7 @@ defmodule AshMysql.Types do
       end
     else
       if is_atom(type) && :erlang.function_exported(type, :type, 1) do
-        {:parameterized, type, constraints || []}
+        Ecto.ParameterizedType.init(type, constraints || [])
       else
         type
       end
