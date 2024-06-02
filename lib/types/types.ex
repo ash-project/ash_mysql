@@ -155,7 +155,8 @@ defmodule AshMysql.Types do
     else
       type =
         if is_atom(type) && :erlang.function_exported(type, :type, 1) do
-          {:parameterized, type, []} |> array_to_in()
+          #parameterized_type(type, []) |> array_to_in()
+          parameterized_type(type, constraints) |> array_to_in()
         else
           type |> array_to_in()
         end
