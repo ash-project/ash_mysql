@@ -9,15 +9,15 @@ defmodule AshMysql.TestRepo.Migrations.MigrateResources1 do
 
   def up do
     create table(:orgs, primary_key: false) do
-      add :name, :text
+      add :name, :string
       add :id, :uuid, null: false, primary_key: true
     end
 
     create table(:authors, primary_key: false) do
-      #add :badges, {:array, :text}
+      #add :badges, {:array, :string}
       add :bio, :map
-      add :last_name, :text
-      add :first_name, :text
+      add :last_name, :string
+      add :first_name, :string
       add :id, :uuid, null: false, primary_key: true
     end
 
@@ -33,7 +33,7 @@ defmodule AshMysql.TestRepo.Migrations.MigrateResources1 do
       add :author_id,
           references(:authors, column: :id, name: "profile_author_id_fkey", type: :uuid)
 
-      add :description, :text
+      add :description, :string
       add :id, :uuid, null: false, primary_key: true
     end
 
@@ -45,27 +45,27 @@ defmodule AshMysql.TestRepo.Migrations.MigrateResources1 do
 
       add :updated_at, :utc_datetime_usec, null: false
       add :created_at, :utc_datetime_usec, null: false
-      add :uniq_custom_two, :text
-      add :uniq_custom_one, :text
-      add :uniq_two, :text
-      add :uniq_one, :text
+      add :uniq_custom_two, :string
+      add :uniq_custom_one, :string
+      add :uniq_two, :string
+      add :uniq_one, :string
       add :stuff, :map
-      add :status_enum, :text
-      add :status, :text
+      add :status_enum, :string
+      add :status, :string
       add :decimal, :decimal
       add :price, :bigint
-      add :type, :text
-      #add :category, :citext
-      add :category, :text
+      add :type, :string
+      add :category, :"VARCHAR(255) COLLATE utf8mb4_0900_ai_ci"
+      #add :category, :string
       add :public, :boolean
       add :score, :bigint
-      add :title, :text
+      add :title, :string
       add :id, :uuid, null: false, primary_key: true
     end
 
     create table(:post_views, primary_key: false) do
       add :post_id, :uuid, null: false
-      add :browser, :text
+      add :browser, :string
       add :time, :utc_datetime_usec, null: false
     end
 
@@ -92,7 +92,7 @@ defmodule AshMysql.TestRepo.Migrations.MigrateResources1 do
           primary_key: true,
           null: false
 
-      add :state, :text
+      add :state, :string
     end
 
     create unique_index(:post_links, [:source_post_id, :destination_post_id],
@@ -103,17 +103,17 @@ defmodule AshMysql.TestRepo.Migrations.MigrateResources1 do
       add :organization_id,
           references(:orgs, column: :id, name: "managers_organization_id_fkey", type: :uuid)
 
-      add :role, :text
-      add :must_be_present, :text, null: false
-      add :code, :text, null: false
-      add :name, :text
+      add :role, :string
+      add :must_be_present, :string, null: false
+      add :code, :string, null: false
+      add :name, :string
       add :id, :uuid, null: false, primary_key: true
     end
 
     create unique_index(:managers, ["code(768)"], name: "managers_uniq_code_index")
 
     create table(:integer_posts, primary_key: false) do
-      add :title, :text
+      add :title, :string
       add :id, :bigserial, null: false, primary_key: true
     end
 
@@ -133,7 +133,7 @@ defmodule AshMysql.TestRepo.Migrations.MigrateResources1 do
       add :created_at, :utc_datetime_usec, null: false
       add :arbitrary_timestamp, :utc_datetime_usec
       add :likes, :bigint
-      add :title, :text
+      add :title, :string
       add :id, :uuid, null: false, primary_key: true
     end
 

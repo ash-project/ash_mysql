@@ -2195,7 +2195,7 @@ defmodule AshMysql.MigrationGenerator do
   defp migration_type({:array, type}, constraints),
     do: {:array, migration_type(type, constraints)}
 
-  defp migration_type(Ash.Type.CiString, _), do: :citext
+  defp migration_type(Ash.Type.CiString, _), do: :"VARCHAR(255) COLLATE utf8mb4_0900_ai_ci"
   defp migration_type(Ash.Type.UUID, _), do: :uuid
   defp migration_type(Ash.Type.Integer, _), do: :bigint
 
@@ -2205,8 +2205,8 @@ defmodule AshMysql.MigrationGenerator do
     migration_type_from_storage_type(Ash.Type.storage_type(type, constraints))
   end
 
-  defp migration_type_from_storage_type(:string), do: :text
-  defp migration_type_from_storage_type(:ci_string), do: :citext
+  defp migration_type_from_storage_type(:string), do: :string
+  defp migration_type_from_storage_type(:ci_string), do: :"VARCHAR(255) COLLATE utf8mb4_0900_ai_ci"
   defp migration_type_from_storage_type(storage_type), do: storage_type
 
   defp foreign_key?(relationship) do

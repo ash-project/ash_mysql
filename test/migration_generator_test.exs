@@ -120,13 +120,13 @@ defmodule AshMysql.MigrationGeneratorTest do
 
       # the migration adds the id, with its default
       assert file_contents =~
-               ~S[add :title_with_default, :text, default: "fred"]
+               ~S[add :title_with_default, :string, default: "fred"]
 
       # the migration adds other attributes
-      assert file_contents =~ ~S[add :title, :text]
+      assert file_contents =~ ~S[add :title, :string]
 
       # the migration unwraps newtypes
-      assert file_contents =~ ~S[add :email, :text]
+      assert file_contents =~ ~S[add :email, :string]
 
       # the migration adds custom attributes
       assert file_contents =~ ~S[add :second_title, :varchar, size: 16]
@@ -234,7 +234,7 @@ defmodule AshMysql.MigrationGeneratorTest do
                Enum.sort(Path.wildcard("test_migration_path/**/*_migrate_resources*.exs"))
 
       assert File.read!(file2) =~
-               ~S[add :name, :text, null: false]
+               ~S[add :name, :string, null: false]
     end
 
     test "when renaming a field, it asks if you are renaming it, and renames it if you are" do
@@ -285,7 +285,7 @@ defmodule AshMysql.MigrationGeneratorTest do
                Enum.sort(Path.wildcard("test_migration_path/**/*_migrate_resources*.exs"))
 
       assert File.read!(file2) =~
-               ~S[add :name, :text, null: false]
+               ~S[add :name, :string, null: false]
     end
 
     test "when renaming a field, it asks which field you are renaming it to, and renames it if you are" do
@@ -343,7 +343,7 @@ defmodule AshMysql.MigrationGeneratorTest do
                Enum.sort(Path.wildcard("test_migration_path/**/*_migrate_resources*.exs"))
 
       assert File.read!(file2) =~
-               ~S[add :subject, :text, null: false]
+               ~S[add :subject, :string, null: false]
     end
 
     test "when an attribute exists only on some of the resources that use the same table, it isn't marked as null: false" do
@@ -374,7 +374,7 @@ defmodule AshMysql.MigrationGeneratorTest do
                Enum.sort(Path.wildcard("test_migration_path/**/*_migrate_resources*.exs"))
 
       assert File.read!(file2) =~
-               ~S[add :example, :text] <> "\n"
+               ~S[add :example, :string] <> "\n"
 
       refute File.read!(file2) =~ ~S[null: false]
     end
@@ -522,7 +522,7 @@ defmodule AshMysql.MigrationGeneratorTest do
       assert [file] = Path.wildcard("test_migration_path/**/*_migrate_resources*.exs")
 
       assert File.read!(file) =~
-               ~S[references(:posts, column: :id, name: "posts_post_id_fkey", type: :text)]
+               ~S[references(:posts, column: :id, name: "posts_post_id_fkey", type: :string)]
     end
 
     test "when modified, the foreign key is dropped before modification" do
