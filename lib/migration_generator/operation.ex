@@ -487,11 +487,11 @@ defmodule AshMysql.MigrationGenerator.Operation do
 
       index_name = index_name || "#{table}_#{name}_index"
 
-      if base_filter do
-        "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], where: \"#{base_filter}\", #{join(["name: \"#{index_name}\""])})"
-      else
-        "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], #{join(["name: \"#{index_name}\""])})"
-      end
+      # if base_filter do
+      #  "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], where: \"#{base_filter}\", #{join(["name: \"#{index_name}\""])})"
+      # else
+      "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], #{join(["name: \"#{index_name}\""])})"
+      # end
     end
 
     def down(%{
@@ -564,7 +564,7 @@ defmodule AshMysql.MigrationGenerator.Operation do
     def up(%{
           index: index,
           table: table,
-          base_filter: base_filter,
+          base_filter: _base_filter,
           multitenancy: multitenancy
         }) do
       keys =
@@ -576,19 +576,19 @@ defmodule AshMysql.MigrationGenerator.Operation do
             Enum.map(index.fields, &to_string/1)
         end
 
-      index =
-        if index.where && base_filter do
-          %{index | where: base_filter <> " AND " <> index.where}
-        else
-          index
-        end
+      # index =
+      #  if index.where && base_filter do
+      #    %{index | where: base_filter <> " AND " <> index.where}
+      #  else
+      #    index
+      #  end
 
       opts =
         join([
           option(:name, index.name),
           option(:unique, index.unique),
           option(:using, index.using),
-          option(:where, index.where),
+          #    option(:where, index.where),
           option(:include, index.include)
         ])
 
@@ -663,7 +663,7 @@ defmodule AshMysql.MigrationGenerator.Operation do
     def down(%{
           index: index,
           table: table,
-          base_filter: base_filter,
+          base_filter: _base_filter,
           multitenancy: multitenancy
         }) do
       keys =
@@ -675,19 +675,19 @@ defmodule AshMysql.MigrationGenerator.Operation do
             Enum.map(index.fields, &to_string/1)
         end
 
-      index =
-        if index.where && base_filter do
-          %{index | where: base_filter <> " AND " <> index.where}
-        else
-          index
-        end
+      # index =
+      #  if index.where && base_filter do
+      #    %{index | where: base_filter <> " AND " <> index.where}
+      #  else
+      #    index
+      #  end
 
       opts =
         join([
           option(:name, index.name),
           option(:unique, index.unique),
           option(:using, index.using),
-          option(:where, index.where),
+          #    option(:where, index.where),
           option(:include, index.include)
         ])
 
@@ -774,11 +774,11 @@ defmodule AshMysql.MigrationGenerator.Operation do
 
       index_name = index_name || "#{table}_#{name}_index"
 
-      if base_filter do
-        "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], where: \"#{base_filter}\", #{join(["name: \"#{index_name}\""])})"
-      else
-        "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], #{join(["name: \"#{index_name}\""])})"
-      end
+      # if base_filter do
+      #  "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], where: \"#{base_filter}\", #{join(["name: \"#{index_name}\""])})"
+      # else
+      "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], #{join(["name: \"#{index_name}\""])})"
+      # end
     end
   end
 end
