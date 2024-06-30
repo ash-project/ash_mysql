@@ -6,49 +6,49 @@
       "type": "uuid",
       "source": "id",
       "references": null,
+      "primary_key?": true,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": true
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "name",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "code",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "must_be_present",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "role",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -59,26 +59,33 @@
         "name": "managers_organization_id_fkey",
         "table": "orgs",
         "on_delete": null,
+        "on_update": null,
+        "destination_attribute_generated": null,
+        "destination_attribute_default": null,
         "multitenancy": {
           "global": null,
-          "strategy": null,
-          "attribute": null
+          "attribute": null,
+          "strategy": null
         },
-        "primary_key?": true,
         "destination_attribute": "id",
-        "on_update": null,
-        "deferrable": false,
-        "destination_attribute_default": null,
-        "destination_attribute_generated": null
+        "primary_key?": true,
+        "deferrable": false
       },
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     }
   ],
   "table": "managers",
-  "hash": "1A4EFC8497F6A73543858892D6324407A7060AC2585EDCA9A759D1E8AF509DEF",
+  "hash": "3A2E51E6E967DF5CB45C1088CC38A9DB0B2AFFB9962C90ABD4346AA51313314C",
   "repo": "Elixir.AshMysql.TestRepo",
+  "multitenancy": {
+    "global": null,
+    "attribute": null,
+    "strategy": null
+  },
+  "base_filter": null,
+  "has_create_action": true,
   "identities": [
     {
       "name": "uniq_code",
@@ -89,13 +96,6 @@
       "index_name": "managers_uniq_code_index"
     }
   ],
-  "base_filter": null,
-  "multitenancy": {
-    "global": null,
-    "strategy": null,
-    "attribute": null
-  },
   "custom_indexes": [],
-  "custom_statements": [],
-  "has_create_action": true
+  "custom_statements": []
 }

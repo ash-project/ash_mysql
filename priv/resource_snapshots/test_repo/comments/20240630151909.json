@@ -6,19 +6,19 @@
       "type": "uuid",
       "source": "id",
       "references": null,
+      "primary_key?": true,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": true
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "title",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -26,9 +26,9 @@
       "type": "bigint",
       "source": "likes",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -36,9 +36,9 @@
       "type": "utc_datetime_usec",
       "source": "arbitrary_timestamp",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -46,9 +46,9 @@
       "type": "utc_datetime_usec",
       "source": "created_at",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -59,21 +59,21 @@
         "name": "special_name_fkey",
         "table": "posts",
         "on_delete": "delete",
+        "on_update": "update",
+        "destination_attribute_generated": null,
+        "destination_attribute_default": null,
         "multitenancy": {
           "global": null,
-          "strategy": null,
-          "attribute": null
+          "attribute": null,
+          "strategy": null
         },
-        "primary_key?": true,
         "destination_attribute": "id",
-        "on_update": "update",
-        "deferrable": false,
-        "destination_attribute_default": null,
-        "destination_attribute_generated": null
+        "primary_key?": true,
+        "deferrable": false
       },
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -84,34 +84,34 @@
         "name": "comments_author_id_fkey",
         "table": "authors",
         "on_delete": null,
+        "on_update": null,
+        "destination_attribute_generated": null,
+        "destination_attribute_default": null,
         "multitenancy": {
           "global": null,
-          "strategy": null,
-          "attribute": null
+          "attribute": null,
+          "strategy": null
         },
-        "primary_key?": true,
         "destination_attribute": "id",
-        "on_update": null,
-        "deferrable": false,
-        "destination_attribute_default": null,
-        "destination_attribute_generated": null
+        "primary_key?": true,
+        "deferrable": false
       },
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     }
   ],
   "table": "comments",
-  "hash": "4F081363C965C68A8E3CC755BCA058C9DC0FB18F5BE5B44FEBEB41B787727702",
+  "hash": "778E001DD557142527A1C3060578712B9AA1C266124B7D3A7F264EBD8D7F0084",
   "repo": "Elixir.AshMysql.TestRepo",
-  "identities": [],
-  "base_filter": null,
   "multitenancy": {
     "global": null,
-    "strategy": null,
-    "attribute": null
+    "attribute": null,
+    "strategy": null
   },
+  "base_filter": null,
+  "has_create_action": true,
+  "identities": [],
   "custom_indexes": [],
-  "custom_statements": [],
-  "has_create_action": true
+  "custom_statements": []
 }

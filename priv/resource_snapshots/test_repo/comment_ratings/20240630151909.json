@@ -6,9 +6,9 @@
       "type": "uuid",
       "source": "id",
       "references": null,
+      "primary_key?": true,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": true
+      "generated?": false
     },
     {
       "default": "nil",
@@ -16,9 +16,9 @@
       "type": "bigint",
       "source": "score",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -26,37 +26,37 @@
       "type": "uuid",
       "source": "resource_id",
       "references": {
-        "name": "post_ratings_resource_id_fkey",
-        "table": "posts",
+        "name": "comment_ratings_resource_id_fkey",
+        "table": "comments",
         "on_delete": null,
+        "on_update": null,
+        "destination_attribute_generated": false,
+        "destination_attribute_default": "nil",
         "multitenancy": {
           "global": null,
-          "strategy": null,
-          "attribute": null
+          "attribute": null,
+          "strategy": null
         },
-        "primary_key?": true,
         "destination_attribute": "id",
-        "on_update": null,
-        "deferrable": false,
-        "destination_attribute_default": "nil",
-        "destination_attribute_generated": false
+        "primary_key?": true,
+        "deferrable": false
       },
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     }
   ],
-  "table": "post_ratings",
-  "hash": "73A4E0A79F5A6449FFE48E2469FDC275723EF207780DA9027F3BBE3119DC0FFA",
+  "table": "comment_ratings",
+  "hash": "E577F5E71B9A2813E4FED883B5BFB7A7307CB6C954ADA66DC0A1E0624BE92281",
   "repo": "Elixir.AshMysql.TestRepo",
-  "identities": [],
-  "base_filter": null,
   "multitenancy": {
     "global": null,
-    "strategy": null,
-    "attribute": null
+    "attribute": null,
+    "strategy": null
   },
+  "base_filter": null,
+  "has_create_action": true,
+  "identities": [],
   "custom_indexes": [],
-  "custom_statements": [],
-  "has_create_action": true
+  "custom_statements": []
 }

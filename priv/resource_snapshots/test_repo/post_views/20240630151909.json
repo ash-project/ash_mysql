@@ -6,19 +6,19 @@
       "type": "utc_datetime_usec",
       "source": "time",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "browser",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -26,22 +26,22 @@
       "type": "uuid",
       "source": "post_id",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     }
   ],
   "table": "post_views",
-  "hash": "D0749D9F514E36781D95F2967C97860C58C6DEAE95543DFAAB0E9C09A1480E93",
+  "hash": "1FA253E437DF5D5AE5F984BF2B118343D2F5E4D7C384713AD1CCCABE72B6535A",
   "repo": "Elixir.AshMysql.TestRepo",
-  "identities": [],
-  "base_filter": null,
   "multitenancy": {
     "global": null,
-    "strategy": null,
-    "attribute": null
+    "attribute": null,
+    "strategy": null
   },
+  "base_filter": null,
+  "has_create_action": true,
+  "identities": [],
   "custom_indexes": [],
-  "custom_statements": [],
-  "has_create_action": true
+  "custom_statements": []
 }

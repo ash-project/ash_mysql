@@ -6,19 +6,19 @@
       "type": "uuid",
       "source": "id",
       "references": null,
+      "primary_key?": true,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": true
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "title",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -26,9 +26,9 @@
       "type": "bigint",
       "source": "score",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -36,29 +36,29 @@
       "type": "boolean",
       "source": "public",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "citext",
+      "type": "VARCHAR(255) COLLATE utf8mb4_0900_ai_ci",
       "source": "category",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "type",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -66,9 +66,9 @@
       "type": "bigint",
       "source": "price",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -76,29 +76,29 @@
       "type": "decimal",
       "source": "decimal",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "status",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "status_enum",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -106,49 +106,49 @@
       "type": "map",
       "source": "stuff",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "uniq_one",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "uniq_two",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "uniq_custom_one",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "uniq_custom_two",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -156,9 +156,9 @@
       "type": "utc_datetime_usec",
       "source": "created_at",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -166,9 +166,9 @@
       "type": "utc_datetime_usec",
       "source": "updated_at",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -179,21 +179,21 @@
         "name": "posts_organization_id_fkey",
         "table": "orgs",
         "on_delete": null,
+        "on_update": null,
+        "destination_attribute_generated": null,
+        "destination_attribute_default": null,
         "multitenancy": {
           "global": null,
-          "strategy": null,
-          "attribute": null
+          "attribute": null,
+          "strategy": null
         },
-        "primary_key?": true,
         "destination_attribute": "id",
-        "on_update": null,
-        "deferrable": false,
-        "destination_attribute_default": null,
-        "destination_attribute_generated": null
+        "primary_key?": true,
+        "deferrable": false
       },
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -204,26 +204,33 @@
         "name": "posts_author_id_fkey",
         "table": "authors",
         "on_delete": null,
+        "on_update": null,
+        "destination_attribute_generated": null,
+        "destination_attribute_default": null,
         "multitenancy": {
           "global": null,
-          "strategy": null,
-          "attribute": null
+          "attribute": null,
+          "strategy": null
         },
-        "primary_key?": true,
         "destination_attribute": "id",
-        "on_update": null,
-        "deferrable": false,
-        "destination_attribute_default": null,
-        "destination_attribute_generated": null
+        "primary_key?": true,
+        "deferrable": false
       },
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     }
   ],
   "table": "posts",
-  "hash": "00D35B64138747A522AD4EAB9BB8E09BDFE30C95844FD1D46E0951E85EA18FBE",
+  "hash": "826667277CF3311FB10E360A18FABB8B11DA310FF36ABD8F7801FA978D9D4467",
   "repo": "Elixir.AshMysql.TestRepo",
+  "multitenancy": {
+    "global": null,
+    "attribute": null,
+    "strategy": null
+  },
+  "base_filter": "type = 'sponsored'",
+  "has_create_action": true,
   "identities": [
     {
       "name": "uniq_one_and_two",
@@ -235,12 +242,6 @@
       "index_name": "posts_uniq_one_and_two_index"
     }
   ],
-  "base_filter": "type = 'sponsored'",
-  "multitenancy": {
-    "global": null,
-    "strategy": null,
-    "attribute": null
-  },
   "custom_indexes": [
     {
       "message": "dude what the heck",
@@ -256,6 +257,5 @@
       "using": null
     }
   ],
-  "custom_statements": [],
-  "has_create_action": true
+  "custom_statements": []
 }

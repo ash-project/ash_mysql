@@ -6,29 +6,29 @@
       "type": "uuid",
       "source": "id",
       "references": null,
+      "primary_key?": true,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": true
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "first_name",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "last_name",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -36,22 +36,22 @@
       "type": "map",
       "source": "bio",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     }
   ],
   "table": "authors",
-  "hash": "EFBB1E574CC263E6E650121801C48B4370F1C9A7C8A213BEF111BFC769BF6651",
+  "hash": "25751BE444ACEEF132F95BCBC0E5AD0F7830976474AAFAFADE844CEA09D81784",
   "repo": "Elixir.AshMysql.TestRepo",
-  "identities": [],
-  "base_filter": null,
   "multitenancy": {
     "global": null,
-    "strategy": null,
-    "attribute": null
+    "attribute": null,
+    "strategy": null
   },
+  "base_filter": null,
+  "has_create_action": true,
+  "identities": [],
   "custom_indexes": [],
-  "custom_statements": [],
-  "has_create_action": true
+  "custom_statements": []
 }

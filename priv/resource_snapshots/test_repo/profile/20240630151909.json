@@ -6,19 +6,19 @@
       "type": "uuid",
       "source": "id",
       "references": null,
+      "primary_key?": true,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": true
+      "generated?": false
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "description",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -29,34 +29,34 @@
         "name": "profile_author_id_fkey",
         "table": "authors",
         "on_delete": null,
+        "on_update": null,
+        "destination_attribute_generated": null,
+        "destination_attribute_default": null,
         "multitenancy": {
           "global": null,
-          "strategy": null,
-          "attribute": null
+          "attribute": null,
+          "strategy": null
         },
-        "primary_key?": true,
         "destination_attribute": "id",
-        "on_update": null,
-        "deferrable": false,
-        "destination_attribute_default": null,
-        "destination_attribute_generated": null
+        "primary_key?": true,
+        "deferrable": false
       },
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     }
   ],
   "table": "profile",
-  "hash": "710F812AC63D2051F6AB22912CE5304088AF1D8F03C2BAFDC07EB24FA62136C2",
+  "hash": "4CB20004A75EA223AE5B01A5F4A7DDD8FDDB20C3DF050DE27FDFBC75A2BB5FF0",
   "repo": "Elixir.AshMysql.TestRepo",
-  "identities": [],
-  "base_filter": null,
   "multitenancy": {
     "global": null,
-    "strategy": null,
-    "attribute": null
+    "attribute": null,
+    "strategy": null
   },
+  "base_filter": null,
+  "has_create_action": true,
+  "identities": [],
   "custom_indexes": [],
-  "custom_statements": [],
-  "has_create_action": true
+  "custom_statements": []
 }

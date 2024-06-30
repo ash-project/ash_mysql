@@ -6,9 +6,9 @@
       "type": "uuid",
       "source": "id",
       "references": null,
+      "primary_key?": true,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": true
+      "generated?": false
     },
     {
       "default": "nil",
@@ -16,9 +16,9 @@
       "type": "boolean",
       "source": "is_active",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     },
     {
       "default": "nil",
@@ -29,34 +29,34 @@
         "name": "accounts_user_id_fkey",
         "table": "users",
         "on_delete": null,
+        "on_update": null,
+        "destination_attribute_generated": null,
+        "destination_attribute_default": null,
         "multitenancy": {
           "global": null,
-          "strategy": null,
-          "attribute": null
+          "attribute": null,
+          "strategy": null
         },
-        "primary_key?": true,
         "destination_attribute": "id",
-        "on_update": null,
-        "deferrable": false,
-        "destination_attribute_default": null,
-        "destination_attribute_generated": null
+        "primary_key?": true,
+        "deferrable": false
       },
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     }
   ],
   "table": "accounts",
-  "hash": "2320B8B55C597C2F07DED9B7BF714832FE22B0AA5E05959A4EA0553669BC368D",
+  "hash": "ABD750E65D02E3EDD5D775D4E1F6D21EA6C83C8E9F81EAC63C32AFF532387F47",
   "repo": "Elixir.AshMysql.TestRepo",
-  "identities": [],
-  "base_filter": null,
   "multitenancy": {
     "global": null,
-    "strategy": null,
-    "attribute": null
+    "attribute": null,
+    "strategy": null
   },
+  "base_filter": null,
+  "has_create_action": true,
+  "identities": [],
   "custom_indexes": [],
-  "custom_statements": [],
-  "has_create_action": true
+  "custom_statements": []
 }

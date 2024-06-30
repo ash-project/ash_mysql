@@ -6,32 +6,32 @@
       "type": "bigint",
       "source": "id",
       "references": null,
+      "primary_key?": true,
       "allow_nil?": false,
-      "generated?": true,
-      "primary_key?": true
+      "generated?": true
     },
     {
       "default": "nil",
       "size": null,
-      "type": "text",
+      "type": "string",
       "source": "title",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "generated?": false
     }
   ],
   "table": "integer_posts",
-  "hash": "A3F61182D99B092A9D17E34B645823D8B0561B467B0195EFE0DA42947153D7E0",
+  "hash": "3568FDF967C0F192422270DF173AAFC9FA5D4A1FA7C4E0E033FA53477987A3D7",
   "repo": "Elixir.AshMysql.TestRepo",
-  "identities": [],
-  "base_filter": null,
   "multitenancy": {
     "global": null,
-    "strategy": null,
-    "attribute": null
+    "attribute": null,
+    "strategy": null
   },
+  "base_filter": null,
+  "has_create_action": true,
+  "identities": [],
   "custom_indexes": [],
-  "custom_statements": [],
-  "has_create_action": true
+  "custom_statements": []
 }
