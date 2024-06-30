@@ -14,6 +14,7 @@ that is derived from [`AshSqlite`](https://hex.pm/packages/ash_sqlite)
 ## Idiosyncrasies and Warnings
 
 - AshMysql is at a very alpha stage of development: expect bugs and problem!
+- It is currently developped with MySQL 8.0. Several changes are still known to be required to work correctly on other versions (particularly regarding collations).
 - For now, you should probably have a uuid_primary_key in your resources. Things may crash or be buggy if you don't.
 - AshMysql uses the Ecto `:string` (=> MySQL VARCHAR(255)) type (Unlike AshPostgres and AshSqlite) when generating migrations for Ash String fields. The `:text` Ecto type (=> MySQL `TEXT`) is not used by default because of various MySQL peculiarities. Use the `migration_types` option of your `mysql` DSL block if you want `:text` fields. See https://github.com/ash-project/ash_mysql/issues/25 for discussion on the subject.
 - If you want case sensitive / insensitive comparisons to work correctly (i.e. in a strict way; not like MySQL's defaults) you currently must use the recommended `utf8mb4_0900_as_cs` collation in your config and when creating your db/tables.
