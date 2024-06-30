@@ -2206,7 +2206,10 @@ defmodule AshMysql.MigrationGenerator do
   end
 
   defp migration_type_from_storage_type(:string), do: :string
-  defp migration_type_from_storage_type(:ci_string), do: :"VARCHAR(255) COLLATE utf8mb4_0900_ai_ci"
+
+  defp migration_type_from_storage_type(:ci_string),
+    do: :"VARCHAR(255) COLLATE utf8mb4_0900_ai_ci"
+
   defp migration_type_from_storage_type(storage_type), do: storage_type
 
   defp foreign_key?(relationship) do
