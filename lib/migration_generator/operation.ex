@@ -472,7 +472,7 @@ defmodule AshMysql.MigrationGenerator.Operation do
     import Helper
 
     def up(%{
-          identity: %{name: name, keys: keys, base_filter: base_filter, index_name: index_name},
+          identity: %{name: name, keys: keys, base_filter: _base_filter, index_name: index_name},
           table: table,
           multitenancy: multitenancy
         }) do
@@ -488,7 +488,8 @@ defmodule AshMysql.MigrationGenerator.Operation do
       index_name = index_name || "#{table}_#{name}_index"
 
       # if base_filter do
-      #  "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], where: \"#{base_filter}\", #{join(["name: \"#{index_name}\""])})"
+      #  "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], where: \"#{base_filter}\",
+      #  #{join(["name: \"#{index_name}\""])})"
       # else
       "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], #{join(["name: \"#{index_name}\""])})"
       # end
@@ -759,7 +760,7 @@ defmodule AshMysql.MigrationGenerator.Operation do
     end
 
     def down(%{
-          identity: %{name: name, keys: keys, base_filter: base_filter, index_name: index_name},
+          identity: %{name: name, keys: keys, base_filter: _base_filter, index_name: index_name},
           table: table,
           multitenancy: multitenancy
         }) do
@@ -775,7 +776,8 @@ defmodule AshMysql.MigrationGenerator.Operation do
       index_name = index_name || "#{table}_#{name}_index"
 
       # if base_filter do
-      #  "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], where: \"#{base_filter}\", #{join(["name: \"#{index_name}\""])})"
+      #  "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], where: \"#{base_filter}\",
+      #  #{join(["name: \"#{index_name}\""])})"
       # else
       "create unique_index(:#{as_atom(table)}, [#{Enum.map_join(keys, ", ", &inspect/1)}], #{join(["name: \"#{index_name}\""])})"
       # end
