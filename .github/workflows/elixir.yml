@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         mysql-version: ["8.0"]
-    uses: lejoko/ash_mysql/.github/workflows/ash-ci.yml@main
+    uses: ash-project/ash_mysql/.github/workflows/ash-ci.yml@main
     with:
       mysql: true
       mysql-version: ${{matrix.mysql-version}}
