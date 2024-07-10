@@ -19,6 +19,22 @@ defmodule AshMysql.Test.UniqueIdentityTest do
                  end
   end
 
+  test "unique constraint errors for identities are properly caught" do
+    attrs = %{title: "title", uniq_one: "one", uniq_two: "two"}
+
+    Post
+    |> Ash.Changeset.for_create(:create, attrs)
+    |> Ash.create!()
+
+    assert_raise Ash.Error.Invalid,
+                 ~r/Invalid value provided for uniq_one: has already been taken/,
+                 fn ->
+                   Post
+                   |> Ash.Changeset.for_create(:create, attrs)
+                   |> Ash.create!()
+                 end
+  end
+
   # no upserts for now. hopefully later
   @tag :skip
   test "a unique constraint can be used to upsert when the resource has a base filter" do

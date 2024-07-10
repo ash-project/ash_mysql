@@ -1029,15 +1029,24 @@ defmodule AshMysql.DataLayer do
     end)
   end
 
-  defp find_identity(resource, searched_name) do
+  defp find_identity(resource, searched_index_name) do
     table = AshMysql.DataLayer.Info.table(resource)
 
-    resource
-    |> Ash.Resource.Info.identities()
-    |> Enum.find(fn identity ->
-      name = AshMysql.CustomIndex.name(table, identity)
-      name == searched_name
-    end)
+    searched_identity_name =
+      searched_index_name
+      |> to_string()
+      |> String.replace_prefix("#{table}_", "")
+      |> String.replace_suffix("_index", "")
+      |> String.to_existing_atom()
+
+    identity =
+      resource
+      |> Ash.Resource.Info.identities()
+      |> Enum.find(fn identity ->
+        identity.name == searched_identity_name
+      end)
+
+    %{fields: identity.keys, message: nil}
   end
 
   defp set_table(record, changeset, operation, table_error?) do
