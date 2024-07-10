@@ -1046,7 +1046,7 @@ defmodule AshMysql.DataLayer do
         identity.name == searched_identity_name
       end)
 
-    %{fields: identity.keys, message: nil}
+    %{fields: identity.keys, message: identity.message}
   end
 
   defp set_table(record, changeset, operation, table_error?) do

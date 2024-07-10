@@ -19,7 +19,7 @@ defmodule AshMysql.Test.UniqueIdentityTest do
                  end
   end
 
-  test "unique constraint errors for identities are properly caught" do
+  test "unique constraint errors for identities are properly caught and custom message is used" do
     attrs = %{title: "title", uniq_one: "one", uniq_two: "two"}
 
     Post
@@ -27,7 +27,7 @@ defmodule AshMysql.Test.UniqueIdentityTest do
     |> Ash.create!()
 
     assert_raise Ash.Error.Invalid,
-                 ~r/Invalid value provided for uniq_one: has already been taken/,
+                 ~r/Invalid value provided for uniq_one: uniq_one_and_two message/,
                  fn ->
                    Post
                    |> Ash.Changeset.for_create(:create, attrs)

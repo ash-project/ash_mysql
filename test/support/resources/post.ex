@@ -63,7 +63,7 @@ defmodule AshMysql.Test.Post do
   end
 
   identities do
-    identity(:uniq_one_and_two, [:uniq_one, :uniq_two])
+    identity(:uniq_one_and_two, [:uniq_one, :uniq_two] , message: "uniq_one_and_two message")
   end
 
   attributes do
