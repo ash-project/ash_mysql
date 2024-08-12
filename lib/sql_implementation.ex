@@ -186,7 +186,7 @@ defmodule AshMysql.SqlImplementation do
                 casted_expr: right_expr,
                 raw: " ELSE ",
                 casted_expr: left_expr,
-                raw: "END"
+                raw: " END"
               ]
             },
             bindings,
@@ -209,7 +209,7 @@ defmodule AshMysql.SqlImplementation do
                 casted_expr: left_expr,
                 raw: " ELSE ",
                 casted_expr: right_expr,
-                raw: "END"
+                raw: " END"
               ]
             },
             bindings,
