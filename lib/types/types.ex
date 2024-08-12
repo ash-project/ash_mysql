@@ -28,6 +28,9 @@ defmodule AshMysql.Types do
   def parameterized_type(type, _constraints) when type in [Ash.Type.Map, Ash.Type.Map.EctoType],
     do: nil
 
+  def parameterized_type(Ash.Type.CiString.EctoType, _constraints),
+    do: nil
+
   def parameterized_type(type, constraints) do
     if Ash.Type.ash_type?(type) do
       cast_in_query? =
@@ -155,7 +158,7 @@ defmodule AshMysql.Types do
     else
       type =
         if is_atom(type) && :erlang.function_exported(type, :type, 1) do
-          #parameterized_type(type, []) |> array_to_in()
+          # parameterized_type(type, []) |> array_to_in()
           parameterized_type(type, constraints) |> array_to_in()
         else
           type |> array_to_in()

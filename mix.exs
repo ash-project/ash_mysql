@@ -40,7 +40,7 @@ defmodule AshMysql.MixProject do
   end
 
   if Mix.env() == :test do
-    def application() do
+    def application do
       [
         mod: {AshMysql.TestApp, []}
       ]
@@ -122,13 +122,12 @@ defmodule AshMysql.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:ecto_sql, "~> 3.9"},
-      {:ecto_sql, github: "elixir-ecto/ecto_sql", override: true},
+      {:ecto_sql, "~> 3.12"},
       {:myxql, ">= 0.0.0"},
-      # {:ecto, "~> 3.9"},
-      {:ecto, github: "elixir-ecto/ecto", override: true},
+      {:ecto, "~> 3.12"},
       {:jason, "~> 1.0"},
       {:ash, ash_version("~> 3.0")},
+      {:picosat_elixir, "~> 0.2"},
       {:ash_sql, ash_sql_version("~> 0.2")},
       {:git_ops, "~> 2.5", only: [:dev, :test]},
       {:ex_doc, "~> 0.22", only: [:dev, :test], runtime: false},
