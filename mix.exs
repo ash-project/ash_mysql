@@ -77,7 +77,7 @@ defmodule AshMysql.MixProject do
         "documentation/topics/development/testing.md",
         "documentation/topics/advanced/expressions.md",
         "documentation/topics/advanced/manual-relationships.md",
-        "documentation/dsls/DSL:-AshMysql.DataLayer.md",
+        "documentation/dsls/DSL-AshMysql.DataLayer.md",
         "CHANGELOG.md"
       ],
       groups_for_extras: [

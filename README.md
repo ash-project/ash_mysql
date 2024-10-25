@@ -44,4 +44,4 @@ that is derived from [`AshSqlite`](https://hex.pm/packages/ash_sqlite)
 
 ## Reference
 
-- [AshMysql.DataLayer DSL](documentation/dsls/DSL:-AshMysql.DataLayer.md)
+- [AshMysql.DataLayer DSL](documentation/dsls/DSL-AshMysql.DataLayer.md)
