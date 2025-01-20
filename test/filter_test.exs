@@ -1,6 +1,8 @@
 defmodule AshMysql.FilterTest do
   use AshMysql.RepoCase, async: false
-  alias AshMysql.Test.{Author, Comment, Post}
+  alias AshMysql.Test.{Author, Comment, IntegerPost, Post}
+
+  import ExUnit.CaptureLog
 
   require Ash.Query
 
@@ -15,6 +17,25 @@ defmodule AshMysql.FilterTest do
       |> Ash.create!()
 
       assert [%Post{title: "title"}] = Ash.read!(Post)
+    end
+
+    test "filtering by integer fields" do
+      post =
+        IntegerPost
+        |> Ash.Changeset.for_create(:create, %{title: "title"})
+        |> Ash.create!()
+
+      output =
+        capture_log(fn ->
+          on_exit(fn ->
+            Logger.configure(level: :error)
+          end)
+
+          Logger.configure(level: :debug)
+          assert Ash.get!(IntegerPost, %{id: post.id})
+        end)
+
+      assert String.contains?(output, "WHERE (i0.`id` = ?)")
     end
   end
 

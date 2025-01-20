@@ -102,6 +102,44 @@ defmodule AshMysql.SqlImplementation do
 
   def expr(
         query,
+        %{
+          __predicate__?: _,
+          left: %Ash.Query.Ref{} = left,
+          right: right,
+          embedded?: pred_embedded?,
+          operator: :==
+        },
+        bindings,
+        embedded?,
+        acc,
+        _type
+      )
+      when is_integer(right) do
+    {left_expr, acc} =
+      AshSql.Expr.dynamic_expr(
+        query,
+        left,
+        Map.put(bindings, :no_cast?, true),
+        pred_embedded? || embedded?,
+        nil,
+        acc
+      )
+
+    {right_expr, acc} =
+      AshSql.Expr.dynamic_expr(
+        query,
+        right,
+        bindings,
+        pred_embedded? || embedded?,
+        nil,
+        acc
+      )
+
+    {:ok, Ecto.Query.dynamic(^left_expr == ^right_expr), acc}
+  end
+
+  def expr(
+        query,
         %mod{
           __predicate__?: _,
           left: left,
