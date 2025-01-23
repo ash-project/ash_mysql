@@ -972,6 +972,7 @@ defmodule AshMysql.DataLayer do
     )
   end
 
+  # sobelow_skip ["DOS.StringToAtom"]
   defp handle_raised_error(
          %MyXQL.Error{
            message: message,
@@ -1402,9 +1403,6 @@ defmodule AshMysql.DataLayer do
              ecto_changeset.changes,
              []
            ) do
-        :empty ->
-          {:ok, changeset.data}
-
         {:ok, query} ->
           repo_opts = repo_opts(changeset.timeout, changeset.tenant, changeset.resource)
 
