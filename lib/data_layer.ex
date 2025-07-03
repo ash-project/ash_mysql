@@ -357,8 +357,8 @@ defmodule AshMysql.DataLayer do
             end
         end
 
-      Mix.Task.run("ash_postgres.rollback", args ++ ["-r", inspect(repo), "-n", to_string(n)])
-      Mix.Task.reenable("ash_postgres.rollback")
+      Mix.Task.run("ash_mysql.rollback", args ++ ["-r", inspect(repo), "-n", to_string(n)])
+      Mix.Task.reenable("ash_mysql.rollback")
     end
   end
 
@@ -445,6 +445,34 @@ defmodule AshMysql.DataLayer do
   def can?(_, :distinct), do: false
   def can?(_, {:sort, _}), do: true
   def can?(_, _), do: false
+
+  if Code.ensure_loaded?(Igniter) do
+    def install(igniter, module, Ash.Resource, _path, argv) do
+      table_name =
+        module
+        |> Module.split()
+        |> List.last()
+        |> Macro.underscore()
+        |> Igniter.Inflex.pluralize()
+
+      {options, _, _} = OptionParser.parse(argv, switches: [repo: :string])
+
+      repo =
+        case options[:repo] do
+          nil ->
+            Igniter.Project.Module.module_name(igniter, "Repo")
+
+          repo ->
+            Igniter.Project.Module.parse(repo)
+        end
+
+      igniter
+      |> Spark.Igniter.set_option(module, [:mysql, :table], table_name)
+      |> Spark.Igniter.set_option(module, [:mysql, :repo], repo)
+    end
+
+    def install(igniter, _, _, _), do: igniter
+  end
 
   @impl true
   def limit(query, nil, _), do: {:ok, query}

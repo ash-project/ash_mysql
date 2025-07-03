@@ -30,7 +30,7 @@ defmodule AshMysql.Mix.Helpers do
     |> Enum.map(&ensure_compiled(&1, args))
     |> case do
       [] ->
-        raise "must supply the --domains argument, or set `config :my_app, ash_domains: [...]` in config"
+        []
 
       domains ->
         domains
