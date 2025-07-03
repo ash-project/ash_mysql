@@ -30,7 +30,7 @@ defmodule AshMysql.MixProject do
       dialyzer: [
         plt_add_apps: [:ecto, :ash, :mix]
       ],
-      docs: docs(),
+      docs: &docs/0,
       aliases: aliases(),
       package: package(),
       source_url: "https://github.com/ash-project/ash_mysql",
@@ -78,6 +78,8 @@ defmodule AshMysql.MixProject do
         "documentation/topics/advanced/expressions.md",
         "documentation/topics/advanced/manual-relationships.md",
         "documentation/dsls/DSL-AshMysql.DataLayer.md",
+        {"documentation/dsls/DSL-AshMysql.DataLayer.md",
+         search_data: Spark.Docs.search_data_for(AshMysql.DataLayer)},
         "CHANGELOG.md"
       ],
       groups_for_extras: [
@@ -186,8 +188,7 @@ defmodule AshMysql.MixProject do
       docs: [
         "spark.cheat_sheets",
         "docs",
-        "spark.replace_doc_links",
-        "spark.cheat_sheets_in_search"
+        "spark.replace_doc_links"
       ],
       "spark.formatter": "spark.formatter --extensions AshMysql.DataLayer",
       "spark.cheat_sheets": "spark.cheat_sheets --extensions AshMysql.DataLayer",
