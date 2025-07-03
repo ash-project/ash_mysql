@@ -153,12 +153,14 @@ defmodule AshMysql.SqlImplementation do
         type
       )
       when operator in [:<>, :||, :&&] do
-    [left_type, right_type] = mod |> determine_types([left, right])
+    {[left_type, right_type], _return_type} = mod |> determine_types([left, right])
 
     {left_expr, acc} =
       if left_type && operator in @cast_operands_for do
         {left_expr, acc} =
           AshSql.Expr.dynamic_expr(query, left, bindings, pred_embedded? || embedded?, nil, acc)
+
+        left_type = parameterized_type(left_type, [])
 
         {type_expr(left_expr, left_type), acc}
       else
@@ -176,6 +178,8 @@ defmodule AshMysql.SqlImplementation do
       if right_type && operator in @cast_operands_for do
         {right_expr, acc} =
           AshSql.Expr.dynamic_expr(query, right, bindings, pred_embedded? || embedded?, nil, acc)
+
+        right_type = parameterized_type(left_type, [])
 
         {type_expr(right_expr, right_type), acc}
       else
@@ -275,8 +279,18 @@ defmodule AshMysql.SqlImplementation do
   @impl true
   def type_expr(expr, nil), do: expr
 
+  def type_expr(expr, {tag, type}) when is_list(expr) and tag in [:array, :in] do
+    Enum.map(expr, &uuid_expr(&1, type))
+  end
+
+  def type_expr(expr, {tag, _type}) when tag in [:array, :in] do
+    expr
+  end
+
   def type_expr(expr, type) when is_atom(type) do
     type = Ash.Type.get_type(type)
+
+    expr = uuid_expr(expr, type)
 
     cond do
       !Ash.Type.ash_type?(type) ->
@@ -291,8 +305,10 @@ defmodule AshMysql.SqlImplementation do
   end
 
   def type_expr(expr, type) do
+    expr = uuid_expr(expr, type)
+
     case type do
-      {:parameterized, inner_type, constraints} ->
+      {:parameterized, {inner_type, constraints}} ->
         if inner_type.type(constraints) == :ci_string do
           Ecto.Query.dynamic(fragment("(? COLLATE utf8mb4_0900_ai_ci)", ^expr))
         else
@@ -305,6 +321,17 @@ defmodule AshMysql.SqlImplementation do
       type ->
         Ecto.Query.dynamic(type(^expr, ^type))
     end
+  end
+
+  defp uuid_expr(expr, {:parameterized, {Ash.Type.UUID.EctoType, _}}) when is_binary(expr) do
+    case Ash.Type.dump_to_native(Ash.Type.UUID, expr) do
+      {:ok, v} -> v
+      _ -> expr
+    end
+  end
+
+  defp uuid_expr(expr, _type) do
+    expr
   end
 
   @impl true
@@ -326,13 +353,72 @@ defmodule AshMysql.SqlImplementation do
   def multicolumn_distinct?, do: false
 
   @impl true
-  def parameterized_type(type, constraints, _no_maps? \\ false) do
-    AshMysql.Types.parameterized_type(type, constraints)
+  def parameterized_type({:parameterized, _} = type, _) do
+    type
+  end
+
+  def parameterized_type({:parameterized, _, _} = type, _) do
+    type
+  end
+
+  def parameterized_type({:in, type}, constraints) do
+    parameterized_type({:array, type}, constraints)
+  end
+
+  def parameterized_type({:array, type}, constraints) do
+    case parameterized_type(type, constraints[:items] || []) do
+      nil ->
+        nil
+
+      type ->
+        {:array, type}
+    end
+  end
+
+  def parameterized_type({type, constraints}, []) do
+    parameterized_type(type, constraints)
+  end
+
+  def parameterized_type(type, constraints) do
+    if Ash.Type.ash_type?(type) do
+      cast_in_query? =
+        if function_exported?(Ash.Type, :cast_in_query?, 2) do
+          Ash.Type.cast_in_query?(type, constraints)
+        else
+          Ash.Type.cast_in_query?(type)
+        end
+
+      if cast_in_query? do
+        type = Ash.Type.ecto_type(type)
+
+        parameterized_type(type, constraints)
+      else
+        nil
+      end
+    else
+      if is_atom(type) && :erlang.function_exported(type, :type, 1) do
+        Ecto.ParameterizedType.init(type, constraints || [])
+      else
+        type
+      end
+    end
   end
 
   @impl true
-  def determine_types(mod, values) do
-    AshMysql.Types.determine_types(mod, values)
+  def determine_types(mod, args, returns \\ nil) do
+    returns =
+      case returns do
+        {:parameterized, _} -> nil
+        {:array, {:parameterized, _}} -> nil
+        {:array, {type, constraints}} when type != :array -> {type, [items: constraints]}
+        {:array, _} -> nil
+        {type, constraints} -> {type, constraints}
+        other -> other
+      end
+
+    {types, new_returns} = Ash.Expr.determine_types(mod, args, returns)
+
+    {types, new_returns || returns}
   end
 
   defp do_get_path(
@@ -362,7 +448,7 @@ defmodule AshMysql.SqlImplementation do
         },
         bindings,
         embedded?,
-        Ash.Type.String,
+        {Ash.Type.String.EctoType, []},
         acc
       )
 
@@ -378,7 +464,7 @@ defmodule AshMysql.SqlImplementation do
         nil
 
       {type, constraints} ->
-        AshMysql.Types.parameterized_type(type, constraints)
+        parameterized_type(type, constraints)
     end
   end
 

@@ -23,7 +23,7 @@ defmodule AshMysql.PolymorphismTest do
     assert [%{score: 10}] =
              Post
              |> Ash.Query.load(:ratings)
-             |> Ash.read_one!()
+             |> Ash.read_one!(authorize?: false)
              |> Map.get(:ratings)
   end
 end

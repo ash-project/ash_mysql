@@ -25,6 +25,7 @@ if Mix.env() == :test do
     username: "root",
     database: "ash_mysql_test",
     hostname: "localhost",
+    log_stacktrace_mfa: fn t, _, _ -> t end,
     pool: Ecto.Adapters.SQL.Sandbox,
     charset: "utf8mb4",
     collation: "utf8mb4_0900_as_cs"

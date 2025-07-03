@@ -2234,6 +2234,8 @@ defmodule AshMysql.MigrationGenerator do
           raise """
           Cannot create a unique index for a resource with a base filter without also configuring `base_filter_sql`.
 
+          In: #{inspect(resource)}
+
           You must provide the `base_filter_sql` option, or skip unique indexes with `skip_unique_indexes`"
           """
         end

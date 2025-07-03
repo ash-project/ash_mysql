@@ -96,7 +96,7 @@ defmodule AshMysql.CalculationTest do
 
     assert %{param_full_name: "tom~holland"} =
              Author
-             |> Ash.Query.load(param_full_name: [separator: "~"])
+             |> Ash.Query.load(param_full_name: %{separator: "~"})
              |> Ash.read_one!()
 
     assert %{} =
@@ -141,7 +141,7 @@ defmodule AshMysql.CalculationTest do
 
     assert [%{first_name: "abc"}, %{first_name: "tom"}] =
              Author
-             |> Ash.Query.sort(param_full_name: [separator: "~"])
+             |> Ash.Query.sort(param_full_name: %{separator: "~"})
              |> Ash.read!()
   end
 
