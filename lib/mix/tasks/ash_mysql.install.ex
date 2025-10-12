@@ -136,7 +136,7 @@ if Code.ensure_loaded?(Igniter) do
           |> case do
             {:ok, zipper} ->
               zipper
-              |> Igniter.Project.Config.modify_configuration_code(
+              |> Igniter.Project.Config.modify_config_code(
                 [repo, :pool_size],
                 otp_app,
                 Sourceror.parse_string!("""

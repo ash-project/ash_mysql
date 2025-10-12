@@ -5,7 +5,8 @@ defmodule AshMysql.Statement do
     :name,
     :up,
     :down,
-    :code?
+    :code?,
+    :__spark_metadata__
   ]
 
   defstruct @fields
