@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2024 Joel Kociolek
+# SPDX-FileCopyrightText: 2020 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
 defmodule AshMysql.Reference do
   @moduledoc "Represents the configuration of a reference (i.e foreign key)."
   defstruct [

@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2024 Joel Kociolek
+# SPDX-FileCopyrightText: 2020 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
 defmodule AshMysql.Statement do
   @moduledoc "Represents a custom statement to be run in generated migrations"
 

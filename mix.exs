@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2024 Joel Kociolek
+# SPDX-FileCopyrightText: 2020 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
 defmodule AshMysql.MixProject do
   use Mix.Project
 
@@ -52,12 +57,20 @@ defmodule AshMysql.MixProject do
 
   defp package do
     [
-      name: :ash_mysql,
+      maintainers: [
+        "Zach Daniel <zach@zachdaniel.dev>",
+        "Joel Kociolek <joel@annatel.net>"
+      ],
       licenses: ["MIT"],
       files: ~w(lib .formatter.exs mix.exs README* LICENSE*
       CHANGELOG* documentation),
       links: %{
-        GitHub: "https://github.com/ash-project/ash_mysql"
+        "GitHub" => "https://github.com/ash-project/ash_mysql",
+        "Changelog" => "https://github.com/ash-project/ash_mysql/blob/main/CHANGELOG.md",
+        "Discord" => "https://discord.gg/HTHRaaVPUc",
+        "Website" => "https://ash-hq.org",
+        "Forum" => "https://elixirforum.com/c/elixir-framework-forums/ash-framework-forum",
+        "REUSE Compliance" => "https://api.reuse.software/info/github.com/ash-project/ash_mysql"
       }
     ]
   end
