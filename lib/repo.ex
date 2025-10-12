@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2024 Joel Kociolek
+# SPDX-FileCopyrightText: 2020 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
 defmodule AshMysql.Repo do
   @moduledoc """
   Resources that use `AshMysql.DataLayer` use a `Repo` to access the database.

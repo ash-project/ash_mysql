@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2024 Joel Kociolek
+SPDX-FileCopyrightText: 2020 Zach Daniel
+
+SPDX-License-Identifier: MIT
+-->
+
 # Testing With MySQL
 
 Testing resources with MySQL generally requires passing `async?: false` to

@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2024 Joel Kociolek
+# SPDX-FileCopyrightText: 2020 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
 defmodule AshMysql.CustomIndex do
   @moduledoc "Represents a custom index on the table backing a resource"
   @fields [

@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2024 Joel Kociolek
+SPDX-FileCopyrightText: 2020 Zach Daniel
+
+SPDX-License-Identifier: MIT
+-->
+
 # Join Manual Relationships
 
 See [Defining Manual Relationships](https://hexdocs.pm/ash/defining-manual-relationships.html) for an idea of manual relationships in general.

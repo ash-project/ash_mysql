@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2024 Joel Kociolek
+# SPDX-FileCopyrightText: 2020 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
 name: CI
 on:
   push:
@@ -12,9 +17,11 @@ jobs:
       fail-fast: false
       matrix:
         mysql-version: ["8.0"]
-    uses: ash-project/ash_mysql/.github/workflows/ash-ci.yml@main
+    uses: ash-project/ash/.github/workflows/ash-ci.yml@main
     with:
       mysql: true
+      ash_mysql: true
       mysql-version: ${{matrix.mysql-version}}
+      reuse: true
     secrets:
       hex_api_key: ${{ secrets.HEX_API_KEY }}
