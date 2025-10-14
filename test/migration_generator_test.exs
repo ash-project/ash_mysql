@@ -1,5 +1,4 @@
-# SPDX-FileCopyrightText: 2024 Joel Kociolek
-# SPDX-FileCopyrightText: 2020 Zach Daniel
+# SPDX-FileCopyrightText: 2024 ash_mysql contributors <https://github.com/ash-project/ash_mysql/graphs.contributors>
 #
 # SPDX-License-Identifier: MIT
 
