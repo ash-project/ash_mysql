@@ -140,7 +140,7 @@ defmodule AshMysql.MixProject do
       {:myxql, ">= 0.0.0"},
       {:ecto, "~> 3.12"},
       {:jason, "~> 1.0"},
-      {:ash, ash_version("~> 3.0")},
+      {:ash, ash_version("~> 3.7")},
       {:picosat_elixir, "~> 0.2"},
       {:ash_sql, ash_sql_version("~> 0.2")},
       {:igniter, "~> 0.5", only: [:dev, :test]},
