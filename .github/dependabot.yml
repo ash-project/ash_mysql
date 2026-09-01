@@ -2,9 +2,15 @@
 #
 # SPDX-License-Identifier: MIT
 
-version: 2
+---
 updates:
-  - package-ecosystem: mix
-    directory: "/"
+  - directory: /
+    groups:
+      all-dependencies:
+        patterns:
+          - '*'
+    package-ecosystem: mix
     schedule:
-      interval: "daily"
+      interval: monthly
+    versioning-strategy: lockfile-only
+version: 2
