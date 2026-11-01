@@ -4,6 +4,8 @@
 
 import Config
 
+config :ash, :default_string_length_count, :codepoints
+
 if Mix.env() == :dev do
   config :git_ops,
     mix_project: AshMysql.MixProject,
